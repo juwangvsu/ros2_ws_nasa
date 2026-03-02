@@ -1,0 +1,1 @@
+/workspace/ws_pointlio/build/point_lio/ament_cmake_environment_hooks/local_setup.sh
