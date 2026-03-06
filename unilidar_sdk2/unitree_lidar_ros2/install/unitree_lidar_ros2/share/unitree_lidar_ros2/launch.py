@@ -46,4 +46,5 @@ def generate_launch_description():
         arguments=['-d', rviz_config_file],
         output='log'
     )
-    return LaunchDescription([node1, rviz_node])
+    #return LaunchDescription([node1, rviz_node])
+    return LaunchDescription([node1])

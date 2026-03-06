@@ -2,6 +2,32 @@ ros2 launch webots_ros2_universal_robot single_launch.py
 ros2 topic echo /ur5e/ur_joint_trajectory_controller/joint_trajectory
 cd /opt/ros/humble/share/webots_ros2_universal_robot
 
+----------3/6/26/ ros2 nasa robotic- --------------------
+ros2 run tf2_tools view_frames
+/laserMapping:
+  camera_init
+  aft_mapped
+
+ros2 run tf2_ros tf2_echo camera_init aft_mapped
+ros2 topic echo 
+topics ok:
+/path
+  published relative slow
+  frame_id:camera_init
+/cloud_registered
+  frame_id:camera_init
+  
+topics no messgage i:
+  /Laser_map
+  /Odometry
+  /cloud_effected
+  /cloud_registered_body
+
+/transform_listener_impl_562dcb38d300
+
+start_bagrun.sh
+start_nasa.sh
+
 ----------3/1/26/ ros2 nasa robotic- --------------------
 chatgpt: nasa robot
 https://github.com/juwangvsu/ros2_ws_nasa.git
@@ -52,6 +78,7 @@ test: (in docker)
 			slow map and path update, due to lidar type mismatch
 
 	pcl_viewer ros2_ws_nasa/ws_pointlio/src/point_lio_ros2/PCD/scans_30.pcd
+
  
 ----------6/26/25 ros2 python- --------------------
  ros2 default use system python3
