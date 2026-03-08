@@ -1,0 +1,350 @@
+header:
+  stamp:
+    sec: 1659389396
+    nanosec: 268644332
+  frame_id: camera_init
+height: 1
+width: 2000
+fields:
+- name: x
+  offset: 0
+  datatype: 7
+  count: 1
+- name: y
+  offset: 4
+  datatype: 7
+  count: 1
+- name: z
+  offset: 8
+  datatype: 7
+  count: 1
+- name: intensity
+  offset: 32
+  datatype: 7
+  count: 1
+- name: normal_x
+  offset: 16
+  datatype: 7
+  count: 1
+- name: normal_y
+  offset: 20
+  datatype: 7
+  count: 1
+- name: normal_z
+  offset: 24
+  datatype: 7
+  count: 1
+- name: curvature
+  offset: 36
+  datatype: 7
+  count: 1
+is_bigendian: false
+point_step: 48
+row_step: 96000
+data:
+- 119
+- 110
+- 136
+- 191
+- 158
+- 56
+- 80
+- 192
+- 183
+- 205
+- 149
+- 62
+- 0
+- 0
+- 128
+- 63
+- 0
+- 0
+- 0
+- 0
+- 0
+- 0
+- 0
+- 0
+- 0
+- 0
+- 0
+- 0
+- 0
+- 0
+- 0
+- 0
+- 0
+- 0
+- 144
+- 64
+- 0
+- 0
+- 0
+- 0
+- 254
+- 6
+- 0
+- 0
+- 30
+- 19
+- 0
+- 0
+- 219
+- 94
+- 131
+- 191
+- 208
+- 91
+- 63
+- 192
+- 19
+- 225
+- 224
+- 62
+- 0
+- 0
+- 128
+- 63
+- 0
+- 0
+- 0
+- 0
+- 0
+- 0
+- 0
+- 0
+- 0
+- 0
+- 0
+- 0
+- 0
+- 0
+- 0
+- 0
+- 0
+- 0
+- 134
+- 66
+- 0
+- 0
+- 0
+- 0
+- 213
+- 30
+- 0
+- 0
+- 254
+- 2
+- 0
+- 0
+- 197
+- 7
+- 72
+- 191
+- 122
+- 92
+- 62
+- 192
+- 200
+- 194
+- 20
+- 63
+- 0
+- 0
+- 128
+- 63
+- 0
+- 0
+- 0
+- 0
+- 0
+- 0
+- 0
+- 0
+- 0
+- 0
+- 0
+- 0
+- 0
+- 0
+- 0
+- 0
+- '...'
+is_dense: true
+---
+header:
+  stamp:
+    sec: 1659389401
+    nanosec: 311862468
+  frame_id: camera_init
+height: 1
+width: 1990
+fields:
+- name: x
+  offset: 0
+  datatype: 7
+  count: 1
+- name: y
+  offset: 4
+  datatype: 7
+  count: 1
+- name: z
+  offset: 8
+  datatype: 7
+  count: 1
+- name: intensity
+  offset: 32
+  datatype: 7
+  count: 1
+- name: normal_x
+  offset: 16
+  datatype: 7
+  count: 1
+- name: normal_y
+  offset: 20
+  datatype: 7
+  count: 1
+- name: normal_z
+  offset: 24
+  datatype: 7
+  count: 1
+- name: curvature
+  offset: 36
+  datatype: 7
+  count: 1
+is_bigendian: false
+point_step: 48
+row_step: 95520
+data:
+- 80
+- 206
+- 173
+- 64
+- 27
+- 179
+- 31
+- 191
+- 159
+- 95
+- 113
+- 62
+- 0
+- 0
+- 128
+- 63
+- 0
+- 0
+- 0
+- 0
+- 0
+- 0
+- 0
+- 0
+- 0
+- 0
+- 0
+- 0
+- 0
+- 0
+- 0
+- 0
+- 0
+- 0
+- 224
+- 64
+- 0
+- 0
+- 0
+- 0
+- 72
+- 52
+- 0
+- 0
+- 67
+- 18
+- 0
+- 0
+- 162
+- 127
+- 175
+- 64
+- 212
+- 222
+- 199
+- 190
+- 38
+- 79
+- 154
+- 62
+- 0
+- 0
+- 128
+- 63
+- 0
+- 0
+- 0
+- 0
+- 0
+- 0
+- 0
+- 0
+- 0
+- 0
+- 0
+- 0
+- 0
+- 0
+- 0
+- 0
+- 171
+- 170
+- 234
+- 64
+- 0
+- 0
+- 0
+- 0
+- 140
+- 33
+- 0
+- 0
+- 113
+- 7
+- 0
+- 0
+- 39
+- 184
+- 178
+- 64
+- 163
+- 69
+- 153
+- 190
+- 37
+- 205
+- 235
+- 62
+- 0
+- 0
+- 128
+- 63
+- 0
+- 0
+- 0
+- 0
+- 0
+- 0
+- 0
+- 0
+- 0
+- 0
+- 0
+- 0
+- 0
+- 0
+- 0
+- 0
+- '...'
+is_dense: true
+---

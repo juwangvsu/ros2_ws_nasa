@@ -66,6 +66,10 @@ PointCloudXYZI::Ptr init_feats_world(new PointCloudXYZI());
 pcl::VoxelGrid<PointType> downSizeFilterSurf;
 pcl::VoxelGrid<PointType> downSizeFilterMap;
 
+double laser_map_pub_interval = 5.0;   // seconds
+double last_laser_map_pub_time = -1.0;
+bool publish_global_map_periodically = true;
+
 V3D euler_cur;
 
 MeasureGroup Measures;
@@ -516,6 +520,7 @@ void publish_init_kdtree(const rclcpp::Publisher<sensor_msgs::msg::PointCloud2>:
 
 PointCloudXYZI::Ptr pcl_wait_pub(new PointCloudXYZI(500000, 1));
 PointCloudXYZI::Ptr pcl_wait_save(new PointCloudXYZI());
+PointCloudXYZI::Ptr pcl_whole_save(new PointCloudXYZI());
 
 void publish_frame_world(const rclcpp::Publisher<sensor_msgs::msg::PointCloud2>::SharedPtr &pubLaserCloudFullRes) {
 
@@ -560,6 +565,7 @@ void publish_frame_world(const rclcpp::Publisher<sensor_msgs::msg::PointCloud2>:
         }
 
         *pcl_wait_save += *laserCloudWorld;
+        *pcl_whole_save += *laserCloudWorld;
 
         static int scan_wait_num = 0;
         scan_wait_num++;
@@ -707,6 +713,33 @@ void publish_path(const rclcpp::Publisher<nav_msgs::msg::Path>::SharedPtr &pubPa
         path.poses.emplace_back(msg_body_pose);
         pubPath->publish(path);
     }
+}
+
+void publish_global_map(const rclcpp::Publisher<sensor_msgs::msg::PointCloud2>::SharedPtr &pubLaserCloudMap) 
+{
+    //if (!pubLaserCloudMap.getNumSubscribers()) return;
+
+    pcl::PointCloud<PointType>::Ptr global_map(new pcl::PointCloud<PointType>());
+
+    int size_init_ikdtree = ikdtree.size();
+    PointCloudXYZI::Ptr laserCloudInit(new PointCloudXYZI(size_init_ikdtree, 1));
+    sensor_msgs::msg::PointCloud2 laserCloudMapMsg;
+
+    ikdtree.flatten(ikdtree.Root_Node, ikdtree.PCL_Storage, NOT_RECORD);
+    laserCloudInit->points = ikdtree.PCL_Storage;
+    laserCloudInit->width = laserCloudInit->points.size();
+    pcl::toROSMsg(*laserCloudInit, laserCloudMapMsg);
+
+    if (laserCloudInit->empty()) return;
+
+    //global_map->width = laserCloudInit->points.size();
+    //global_map->height = 1;
+    //global_map->is_dense = true;
+
+    //pcl::toROSMsg(*global_map, laserCloudMapMsg);
+    laserCloudMapMsg.header.stamp = get_ros_time(lidar_end_time); //ros::Time().fromSec(lidar_end_time);
+    laserCloudMapMsg.header.frame_id = "camera_init";
+    pubLaserCloudMap->publish(laserCloudMapMsg);
 }
 
 int main(int argc, char **argv) {
@@ -1260,6 +1293,15 @@ int main(int argc, char **argv) {
             }
 
             t5 = omp_get_wtime();
+            if (publish_global_map_periodically)
+            {
+              if (last_laser_map_pub_time < 0.0 ||
+                  (lidar_end_time - last_laser_map_pub_time) >= laser_map_pub_interval)
+              {
+                publish_global_map(pubLaserCloudMap);
+                last_laser_map_pub_time = lidar_end_time;
+              }
+            }
             /******* Publish points *******/
             if (path_en) publish_path(pubPath);
             if (scan_pub_en || pcd_save_en) publish_frame_world(pubLaserCloudFullRes);
@@ -1309,11 +1351,11 @@ int main(int argc, char **argv) {
     //--------------------------save map-----------------------------------
     /* 1. make sure you have enough memories
        2. noted that pcd save will influence the real-time performences **/
-    if (pcl_wait_save->size() > 0 && pcd_save_en) {
+    if (pcl_whole_save->size() > 0 && pcd_save_en) {
         string file_name = string("scans.pcd");
         string all_points_dir(string(string(ROOT_DIR) + "PCD/") + file_name);
         pcl::PCDWriter pcd_writer;
-        pcd_writer.writeBinary(all_points_dir, *pcl_wait_save);
+        pcd_writer.writeBinary(all_points_dir, *pcl_whole_save);
     }
     fout_out.close();
     fout_imu_pbp.close();

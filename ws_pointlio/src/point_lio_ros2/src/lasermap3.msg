@@ -1,0 +1,175 @@
+header:
+  stamp:
+    sec: 1659389489
+    nanosec: 765030145
+  frame_id: camera_init
+height: 1
+width: 10061
+fields:
+- name: x
+  offset: 0
+  datatype: 7
+  count: 1
+- name: y
+  offset: 4
+  datatype: 7
+  count: 1
+- name: z
+  offset: 8
+  datatype: 7
+  count: 1
+- name: intensity
+  offset: 32
+  datatype: 7
+  count: 1
+- name: normal_x
+  offset: 16
+  datatype: 7
+  count: 1
+- name: normal_y
+  offset: 20
+  datatype: 7
+  count: 1
+- name: normal_z
+  offset: 24
+  datatype: 7
+  count: 1
+- name: curvature
+  offset: 36
+  datatype: 7
+  count: 1
+is_bigendian: false
+point_step: 48
+row_step: 482928
+data:
+- 238
+- 82
+- 220
+- 65
+- 221
+- 26
+- 135
+- 64
+- 216
+- 27
+- 4
+- 64
+- 0
+- 0
+- 128
+- 63
+- 0
+- 0
+- 0
+- 0
+- 0
+- 0
+- 0
+- 0
+- 0
+- 0
+- 0
+- 0
+- 0
+- 0
+- 0
+- 0
+- 0
+- 0
+- 160
+- 64
+- 0
+- 0
+- 0
+- 0
+- 69
+- 55
+- 0
+- 0
+- 99
+- 10
+- 0
+- 0
+- 85
+- 73
+- 221
+- 65
+- 12
+- 61
+- 144
+- 64
+- 224
+- 242
+- 7
+- 64
+- 0
+- 0
+- 128
+- 63
+- 0
+- 0
+- 0
+- 0
+- 0
+- 0
+- 0
+- 0
+- 0
+- 0
+- 0
+- 0
+- 0
+- 0
+- 0
+- 0
+- 0
+- 0
+- 160
+- 64
+- 0
+- 0
+- 0
+- 0
+- 0
+- 54
+- 0
+- 0
+- 26
+- 14
+- 0
+- 0
+- 40
+- 174
+- 222
+- 65
+- 124
+- 49
+- 116
+- 64
+- 35
+- 128
+- 17
+- 64
+- 0
+- 0
+- 128
+- 63
+- 0
+- 0
+- 0
+- 0
+- 0
+- 0
+- 0
+- 0
+- 0
+- 0
+- 0
+- 0
+- 0
+- 0
+- 0
+- 0
+- '...'
+is_dense: true
+---

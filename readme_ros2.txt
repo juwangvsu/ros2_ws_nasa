@@ -2,6 +2,14 @@ ros2 launch webots_ros2_universal_robot single_launch.py
 ros2 topic echo /ur5e/ur_joint_trajectory_controller/joint_trajectory
 cd /opt/ros/humble/share/webots_ros2_universal_robot
 
+----------3/7/26/ ros2 point_lio - --------------------
+panda2
+msbuild sim test
+global map:
+  PCD/scans.pcd, 415712 pts
+  /Laser_map
+ros2 topic echo /Laser_map --full-length > lasermsg.txt
+
 ----------3/6/26/ ros2 nasa robotic- --------------------
 ros2 run tf2_tools view_frames
 /laserMapping:
@@ -17,16 +25,19 @@ topics ok:
 /cloud_registered
   frame_id:camera_init
   
-topics no messgage i:
+topics no messgage :
   /Laser_map
   /Odometry
   /cloud_effected
   /cloud_registered_body
+     frame_id: body
+      scan_bodyframe_pub_en: true 
 
 /transform_listener_impl_562dcb38d300
 
 start_bagrun.sh
 start_nasa.sh
+
 
 ----------3/1/26/ ros2 nasa robotic- --------------------
 chatgpt: nasa robot
