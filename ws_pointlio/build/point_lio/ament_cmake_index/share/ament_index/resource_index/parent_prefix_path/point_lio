@@ -1,1 +1,1 @@
-/opt/ros/humble
+/workspace/ws_pointlio/install/pointlio_nav_bringup:/workspace/ws_pointlio/install/pointlio_tf_bridge:/workspace/ws_pointlio/install/pointlio_nav_bridge:/workspace/ws_pointlio/install/point_lio:/workspace/unilidar_sdk2/unitree_lidar_ros2/install/unitree_lidar_ros2:/opt/ros/humble

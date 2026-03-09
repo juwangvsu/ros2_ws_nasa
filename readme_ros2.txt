@@ -4,8 +4,16 @@ cd /opt/ros/humble/share/webots_ros2_universal_robot
 
 ----  build note --------------
 cd unilidar_sdk2/unitree_lidar_ros2/; colcon build
-cd ws_pointlio/; colcon build
+cd ws_pointlio/; 
+	colcon build
+	colcon build --symlink-install
 source ws_pointlio/install/setup.bash
+
+----------3/7/26/ ros2 point_lio docker --------------------
+hptitan22:
+docker exec -it ros2_ws bash
+export DISPLAY=:0
+./start_bagrun_docker.sh
 
 ----------3/7/26/ ros2 point_lio - --------------------
 panda2
