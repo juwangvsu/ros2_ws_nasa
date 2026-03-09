@@ -2,6 +2,11 @@ ros2 launch webots_ros2_universal_robot single_launch.py
 ros2 topic echo /ur5e/ur_joint_trajectory_controller/joint_trajectory
 cd /opt/ros/humble/share/webots_ros2_universal_robot
 
+----  build note --------------
+cd unilidar_sdk2/unitree_lidar_ros2/; colcon build
+cd ws_pointlio/; colcon build
+source ws_pointlio/install/setup.bash
+
 ----------3/7/26/ ros2 point_lio - --------------------
 panda2
 msbuild sim test
