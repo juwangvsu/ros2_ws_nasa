@@ -7,7 +7,7 @@ xterm -e bash -ic "rviz2 -d ws_pointlio/src/pointlio_tf_bridge/scan.rviz; bash"&
 xterm -e bash -ic  "ros2 run pointcloud_to_laserscan pointcloud_to_laserscan_node  --ros-args   --params-file pointcloud_to_laserscan.yaml   -r cloud_in:=/baal/lidar_points   -r scan:=/scan"&
 xterm -e bash -ic  "ros2 launch pointlio_tf_bridge pointlio_tf_bridge.launch.py use_sim_time:=true; bash"&
 xterm -e bash -ic "ros2 launch slam_toolbox online_async_launch.py   slam_params_file:=slam_async_pointlio.yaml; bash"&
-xterm -e bash -ic  "ros2 launch nav2_bringup navigation_launch.py   use_sim_time:=true;bash"&
+xterm -e bash -ic  "ros2 launch nav2_bringup navigation_launch.py   use_sim_time:=true params_file:=nav2_pointlio.yaml;bash"&
 
 
 
