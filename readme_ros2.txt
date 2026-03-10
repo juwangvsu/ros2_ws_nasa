@@ -9,6 +9,10 @@ alienserver 192.168.1.7 vsu, vsu@2026
 lidar   192.168.1.62
 
 ----  build note --------------
+sudo apt install ros-humble-pointcloud-to-laserscan
+sudo apt install -y ros-humble-slam-toolbox --allow-unauthenticated
+sudo apt install ros-humble-navigation2 ros-humble-nav2-bringup
+
 cd unilidar_sdk2/unitree_lidar_ros2/; colcon build
 cd ws_pointlio/; 
 	colcon build
