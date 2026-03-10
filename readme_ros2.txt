@@ -2,6 +2,12 @@ ros2 launch webots_ros2_universal_robot single_launch.py
 ros2 topic echo /ur5e/ur_joint_trajectory_controller/joint_trajectory
 cd /opt/ros/humble/share/webots_ros2_universal_robot
 
+------wired ip addr, login, pass ---------------
+panda 192.168.1.5 robot, vsu@2026
+pi    192.168.1.4 vsu, vsu@2026
+alienserver 192.168.1.7 vsu, vsu@2026
+lidar   192.168.1.62
+
 ----  build note --------------
 cd unilidar_sdk2/unitree_lidar_ros2/; colcon build
 cd ws_pointlio/; 
@@ -48,7 +54,11 @@ topics no messgage :
 
 /transform_listener_impl_562dcb38d300
 
-start_bagrun.sh
+start_bagrun.sh:
+      launch point_lio, slamtool, nav2, bag play
+start_bagrun_docker.sh
+      similar above, for docker setup
+
 start_nasa.sh
 
 
