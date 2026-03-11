@@ -23,6 +23,9 @@ def generate_launch_description():
     static_parent = LaunchConfiguration("static_parent")
     static_child = LaunchConfiguration("static_child")
 
+    static_parent2 = LaunchConfiguration("static_parent2")
+    static_child2 = LaunchConfiguration("static_child2")
+
     bridge = Node(
         package="pointlio_tf_bridge",
         executable="republish_pointlio_tf_as_odom",
@@ -58,6 +61,23 @@ def generate_launch_description():
         parameters=[{"use_sim_time": use_sim_time}],
     )
 
+    static_tf2 = Node(
+        package="tf2_ros",
+        executable="static_transform_publisher",
+        name="base_link_to_unilidar_lidar_static_tf",
+        output="screen",
+        arguments=[
+            "--x", static_x,
+            "--y", static_y,
+            "--z", static_z,
+            "--roll", static_roll,
+            "--pitch", static_pitch,
+            "--yaw", static_yaw,
+            "--frame-id", static_parent2,
+            "--child-frame-id", static_child2,
+        ],
+        parameters=[{"use_sim_time": use_sim_time}],
+    )
     return LaunchDescription([
         DeclareLaunchArgument("use_sim_time", default_value="true"),
         DeclareLaunchArgument("source_parent", default_value="camera_init"),
@@ -77,6 +97,10 @@ def generate_launch_description():
         DeclareLaunchArgument("static_pitch", default_value="0"),
         DeclareLaunchArgument("static_yaw", default_value="0"),
 
+        DeclareLaunchArgument("static_parent2", default_value="unilidar_lidar"),
+        DeclareLaunchArgument("static_child2", default_value="base_link"),
+
         bridge,
         static_tf,
+        static_tf2,
     ])
