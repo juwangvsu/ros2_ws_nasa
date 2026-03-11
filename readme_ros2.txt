@@ -19,6 +19,11 @@ cd ws_pointlio/;
 	colcon build --symlink-install
 source ws_pointlio/install/setup.bash
 
+----------3/10/26/ unitree lidar bag test --------------------
+start_bagrun_uni.sh
+  change_frame.py to change frame_id of cloud to baal/base 
+  bag play should only play two data topics, don't pub tf from bag
+ 
 ----------3/7/26/ ros2 point_lio docker --------------------
 hptitan22:
 docker exec -it ros2_ws bash
