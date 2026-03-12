@@ -56,8 +56,8 @@ void readParameters(shared_ptr<rclcpp::Node> &nh) {
     nh->declare_parameter<bool>("common.cut_frame", false);
     nh->declare_parameter<double>("common.cut_frame_time_interval", 0.1);
     nh->declare_parameter<double>("common.time_lag_imu_to_lidar", 0.0);
-    nh->declare_parameter<double>("filter_size_surf", 0.5);
-    nh->declare_parameter<double>("filter_size_map", 0.5);
+    nh->declare_parameter<double>("filter_size_surf", 0.1);
+    nh->declare_parameter<double>("filter_size_map", 0.1);
     nh->declare_parameter<double>("cube_side_length", 200);
     nh->declare_parameter<float>("mapping.det_range", 300.f);
     nh->declare_parameter<double>("mapping.fov_degree", 180);

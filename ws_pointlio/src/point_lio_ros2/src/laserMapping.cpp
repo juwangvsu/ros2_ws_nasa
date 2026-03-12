@@ -925,6 +925,7 @@ int main(int argc, char **argv) {
             lasermap_fov_segment();
             /*** downsample the feature points in a scan ***/
             t1 = omp_get_wtime();
+            cout << "feats_undistort size" << feats_undistort->points.size() << endl;
             if (space_down_sample) {
                 downSizeFilterSurf.setInputCloud(feats_undistort);
                 downSizeFilterSurf.filter(*feats_down_body);
@@ -933,6 +934,7 @@ int main(int argc, char **argv) {
                 feats_down_body = Measures.lidar;
                 sort(feats_down_body->points.begin(), feats_down_body->points.end(), time_list);
             }
+            cout << "feats_down_body size" << feats_down_body->points.size() << endl;
             time_seq = time_compressing<int>(feats_down_body);
             feats_down_size = feats_down_body->points.size();
 

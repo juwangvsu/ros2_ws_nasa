@@ -23,6 +23,18 @@ source ws_pointlio/install/setup.bash
 start_bagrun_uni.sh
   change_frame.py to change frame_id of cloud to baal/base 
   bag play should only play two data topics, don't pub tf from bag
+
+unitree lidar to scan sparse:
+ ./test_lidarscan_unitree_docker.sh
+ [pointcloud_to_laserscan_logged]: cloud points=5312 converted=548 filled_bins=49
+[pointlio_mapping-1] feats_undistort size5293
+[pointlio_mapping-1] feats_down_body size1952
+
+./test_lidarscan_msbuild_docker.sh
+pointcloud_to_laserscan_logged]: cloud points=25721 converted=9810 filled_bins=350
+
+[pointlio_mapping-1] feats_undistort size5452
+[pointlio_mapping-1] feats_down_body size724
  
 ----------3/7/26/ ros2 point_lio docker --------------------
 hptitan22:
