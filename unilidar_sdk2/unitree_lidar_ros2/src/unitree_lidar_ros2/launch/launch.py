@@ -3,9 +3,17 @@ import subprocess
 
 from launch import LaunchDescription
 from launch_ros.actions import Node
+from launch.actions import DeclareLaunchArgument
+from launch.substitutions import LaunchConfiguration
 
 def generate_launch_description():
     # Run unitree lidar
+    # 1. Declare the argument so the CLI can see it
+    cloud_topic_arg = DeclareLaunchArgument(
+        'cloud_topic',
+        default_value='unilidar/cloud',
+        description='Topic name for the point cloud'
+    )
     node1 = Node(
         package='unitree_lidar_ros2',
         executable='unitree_lidar_ros2_node',
@@ -29,7 +37,8 @@ def generate_launch_description():
                 {'local_ip': '192.168.1.2'},
                 
                 {'cloud_frame': "unilidar_lidar"},
-                {'cloud_topic': "unilidar/cloud"},
+                {'cloud_topic': LaunchConfiguration('cloud_topic')},
+                #{'cloud_topic': "unilidar/cloud"},
                 {'imu_frame': "unilidar_imu"},
                 {'imu_topic': "unilidar/imu"},
                 ]
