@@ -23,7 +23,7 @@ def generate_launch_description():
                 
                 {'initialize_type': 2},
                 {'work_mode': 0},
-                {'use_system_timestamp': True},
+                {'use_system_timestamp': False},
                 {'range_min': 0.0},
                 {'range_max': 100.0},
                 {'cloud_scan_num': 18},
@@ -36,10 +36,10 @@ def generate_launch_description():
                 {'local_port': 6201},
                 {'local_ip': '192.168.1.2'},
                 
-                {'cloud_frame': "unilidar_lidar"},
+                {'cloud_frame': "baal/base"},
                 {'cloud_topic': LaunchConfiguration('cloud_topic')},
                 #{'cloud_topic': "unilidar/cloud"},
-                {'imu_frame': "unilidar_imu"},
+                {'imu_frame': "baal/imu"},
                 {'imu_topic': "unilidar/imu"},
                 ]
     )

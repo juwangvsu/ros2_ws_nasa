@@ -19,6 +19,16 @@ cd ws_pointlio/;
 	colcon build --symlink-install
 source ws_pointlio/install/setup.bash
 
+----------3/12/26/ point_lio unitree lidar  --------------------
+
+lidar driver don't use system time
+  unitree_lidar_ros2/launch/launch.py 
+
+point_lio only last about 3 minutes, then it fail to compute, stuck
+
+cpu power related?
+
+
 ----------3/10/26/ unitree lidar bag test --------------------
 start_bagrun_uni.sh
   change_frame.py to change frame_id of cloud to baal/base 
@@ -186,3 +196,21 @@ note: tbt ros1 one another machine,
 ---FAQ-------------
 colcon:
 	apt install ros-dev-tools
+
+sudo mkdir -p /etc/apt/keyrings
+
+# 1) Remove old ROS source entries if they exist
+sudo rm -f /etc/apt/sources.list.d/ros2.list
+sudo rm -f /etc/apt/sources.list.d/ros-latest.list
+
+# 2) Make sure Universe is enabled
+sudo apt install -y software-properties-common
+sudo add-apt-repository -y universe
+
+# 3) Install the current ROS apt source package (official current method)
+sudo apt install -y curl
+export ROS_APT_SOURCE_VERSION=$(curl -s https://api.github.com/repos/ros-infrastructure/ros-apt-source/releases/latest | grep -F "tag_name" | awk -F\" '{print $4}')
+curl -L -o /tmp/ros2-apt-source.deb "https://github.com/ros-infrastructure/ros-apt-source/releases/download/${ROS_APT_SOURCE_VERSION}/ros2-apt-source_${ROS_APT_SOURCE_VERSION}.$(. /etc/os-release && echo ${UBUNTU_CODENAME:-${VERSION_CODENAME}})_all.deb"
+sudo dpkg -i /tmp/ros2-apt-source.deb
+
+rm /var/lib/apt/lists/*ros*; apt update
