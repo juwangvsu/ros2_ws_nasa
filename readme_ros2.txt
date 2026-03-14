@@ -19,6 +19,23 @@ cd ws_pointlio/;
 	colcon build --symlink-install
 source ws_pointlio/install/setup.bash
 
+----------3/14/26/ point_lio tf  --------------------
+using panda sigma more powerful vmachine
+
+cpu overload, tf might be it:
+unitree imu 800hz, much higher than usual
+point_lio publish tf per imu, causing tf 2000hz
+this overload tf, and anything listen to tf. 
+even republish tf node use 100% cpu. even if it only publish at 50 hz, it has to listen to 2000hz tf
+
+fix:  
+  point_lio publish_odometry_without_downsample set to false in yaml file
+
+before this fix nav2 stack will crush the cpu load and cause point_lio 
+  to miss data and fail quickly.
+
+after this fix full stack seems to run well
+
 ----------3/12/26/ point_lio unitree lidar  --------------------
 
 lidar driver don't use system time

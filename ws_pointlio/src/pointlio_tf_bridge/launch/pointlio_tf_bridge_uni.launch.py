@@ -79,7 +79,7 @@ def generate_launch_description():
         parameters=[{"use_sim_time": use_sim_time}],
     )
     return LaunchDescription([
-        DeclareLaunchArgument("use_sim_time", default_value="true"),
+        DeclareLaunchArgument("use_sim_time", default_value="false"),
         DeclareLaunchArgument("source_parent", default_value="camera_init"),
         DeclareLaunchArgument("source_child", default_value="aft_mapped"),
         DeclareLaunchArgument("target_parent", default_value="odom"),

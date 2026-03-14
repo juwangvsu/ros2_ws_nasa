@@ -45,12 +45,14 @@ class TFRepublisher(Node):
             self.odom_pub = self.create_publisher(Odometry, "odom", 10)
 
         period = 1.0 / max(1e-6, self.rate_hz)
+        print(f"repub timer period {period}")
         self.timer = self.create_timer(period, self.on_timer)
 
         self.get_logger().info(
             f"Republishing TF {self.source_parent}->{self.source_child} "
             f"as {self.target_parent}->{self.target_child}; "
             f"publish_odom={self.publish_odom}, rate={self.rate_hz}Hz"
+            f"repub timer period {period}"
         )
 
     def on_timer(self):
@@ -68,6 +70,9 @@ class TFRepublisher(Node):
             )
             return
 
+        self.get_logger().info(
+            f"Republishing TF {self.source_parent}->{self.source_child} "
+            )
         out = TransformStamped()
         out.header.stamp = trans.header.stamp
         #out.header.stamp = self.get_clock().now().to_msg()
