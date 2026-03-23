@@ -11,4 +11,5 @@ gnome-terminal -x  $SHELL -ic "cd ~/ros2_ws_nasa; ros2 run pointcloud_to_lasersc
 gnome-terminal -x  $SHELL -ic "cd ~/ros2_ws_nasa; ros2 launch pointlio_tf_bridge pointlio_tf_bridge_uni.launch.py rate:=10.0; bash"
 gnome-terminal -x  $SHELL -ic "cd ~/ros2_ws_nasa; ros2 launch slam_toolbox online_async_launch.py   slam_params_file:=slam_async_pointlio_uni.yaml; bash"
 gnome-terminal -x  $SHELL -ic "ros2 launch nav2_bringup navigation_launch.py   params_file:=nav2_pointlio.yaml;bash"
+gnome-terminal -x  $SHELL -ic " ros2 launch mdds30_serial_driver mdds30.launch.py; bash" 
 

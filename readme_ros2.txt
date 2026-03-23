@@ -19,6 +19,16 @@ cd ws_pointlio/;
 	colcon build --symlink-install
 source ws_pointlio/install/setup.bash
 
+----------3/22/26/ start_nasa_full.sh  --------------------
+
+panda2:
+  cd ros2_ws_nasa; ./start_nasa_full.sh
+
+laptop:
+  cd ros2_ws_nasa; ./start_nasa_teleop.sh
+ 
+check /cmd_vel
+ 
 ----------3/14/26/ point_lio tf  --------------------
 using panda sigma more powerful vmachine
 
