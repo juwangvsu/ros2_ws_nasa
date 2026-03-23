@@ -28,7 +28,17 @@ laptop:
   cd ros2_ws_nasa; ./start_nasa_teleop.sh
  
 check /cmd_vel
- 
+
+ ----------3/14/26/ cleanup start_###.sh  --------------------               
+                                                                             
+ oked: uni bag3 and msbuild bag3, live uni                                   
+   start_bagrun.sh                                                           
+   start_bagrun_uni.sh                                                       
+   start_nasa_full.sh                                                        
+                                                                             
+ remaing to dbg:                                                             
+   why uni data converted scan sparse and have many holes?  
+
 ----------3/14/26/ point_lio tf  --------------------
 using panda sigma more powerful vmachine
 
@@ -38,13 +48,45 @@ point_lio publish tf per imu, causing tf 2000hz
 this overload tf, and anything listen to tf. 
 even republish tf node use 100% cpu. even if it only publish at 50 hz, it has to listen to 2000hz tf
 
-fix:  
-  point_lio publish_odometry_without_downsample set to false in yaml file
+fix 1: lidar driver tf disabled now                                             
+  tf published by unilidar driver might also cause problem since it is not publi
+  there is not reason for lidar driver to publish tf as live tf since lidar and 
+                                                                                
+fix 2:                                                                          
+  point_lio publish_odometry_without_downsample set to false in yaml file 
 
 before this fix nav2 stack will crush the cpu load and cause point_lio 
   to miss data and fail quickly.
 
 after this fix full stack seems to run well
+
+----- 3/14/26 tf who publish what start_nasa_full.sh--------------------
+lidar_driver:
+  commented off the tf publishing part,
+  two static publish nodes
+  baal/imu_initial -> baal/imu -> baal/base
+  use_system_time true is ok,
+
+point_lio:
+  tf pub:
+  camera_initial -> aft_mapped
+
+point_cloud_laserscan:
+  target_frame in params file
+  needed tf:
+    frame_id (cloud_in) -> target_frame
+pointlio_tf_bridge_uni repub node:
+  tf pub:
+  odom -> base_link
+pointlio_tf_bridge_uni static tf node:
+  tf pub:
+  base_link -> baal/imu_initial
+slam_toolbox:
+  tf pub:
+    map->odom
+  tf need:
+    odom -> frame_id (laserscan /scan)
+    odom -> base_frame (see param file)
 
 ----------3/12/26/ point_lio unitree lidar  --------------------
 
@@ -112,13 +154,34 @@ topics no messgage :
 
 /transform_listener_impl_562dcb38d300
 
-start_bagrun.sh:
-      launch point_lio, slamtool, nav2, bag play
-start_bagrun_docker.sh
-      similar above, for docker setup
+start_bagrun.sh: ok                                                             
+      msbuild data launch point_lio, slamtool, nav2, bag play                   
+  tf: map->odom->base_link->baal/base                                           
+    camera_init-?aft_mapped                                                     
+  dense laserscan good reconstruct                                              
+  raw data 2500 points/frame, about 700 converted to scan stable.               
+                                                                                
+start_bagrun_uni.sh:                                                            
+  change_frame.py                                                               
+  tf: map->odom->base_link->baal/base                                           
+    camera_init-?aft_mapped                                                     
+  unitree data set stationary,                                                  
+  sparse laserscan, many laser point inf value, jumpy why?                      
+  raw data 5000 points/frame, only 50 converted to scan                         
+                                                                                
+start_bagrun_docker.sh                                                          
+      similar above, for docker setup      
 
-start_nasa.sh
-
+start_nasa.sh: ok                                                               
+  live data unilidar quick test                                                 
+start_nasa_full.sh: ok                                                          
+  live data full stack test: point_lio, slam, nav2                              
+  tf: map->odom->base_link->baal/imu_initial->baal/imu->baal/base               
+    camera_init-?aft_mapped                                                     
+yaml:                                                                           
+nav2_pointlio.yaml                    pointcloud_to_laserscan.yaml              
+pointcloud_to_laserscan_unitree.yaml  slam_async_pointlio_uni.yaml              
+pointcloud_to_laserscan_uni.yaml      slam_async_pointlio.yaml  
 
 ----------3/1/26/ ros2 nasa robotic- --------------------
 chatgpt: nasa robot
