@@ -49,7 +49,8 @@
                           0.0, 0.0, 1.0 ] # ulhk 4 utbm 3
 
         odometry: 
-            publish_odometry_without_downsample: false  
+            publish_odometry_without_downsample: false   # set to false if cpu load getting high and point_lio degrade after a few minutes. this affect how much
+            # tf will be published. if true the tf is the rate of imu msg, ~ 800hz *3 
 
         publish:
             path_en: true                 # false: close the path output

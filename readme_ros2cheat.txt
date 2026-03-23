@@ -24,4 +24,7 @@ ros2 topic echo /goal_pose
 
 ros2 service call /navigate_to_pose/_action/cancel_goal action_msgs/srv/CancelGoal "{}"
 
+ros2 topic echo --full-length --once -l 500 /scan > scan_unibag3.msg
+
+alias ros2kill='ps aux | grep ros2 | grep -v grep | awk "{print \$2}" | xargs kill -9; ps aux | grep tf2 | grep -v grep | awk "{print \$2}" | xargs kill -9'
 

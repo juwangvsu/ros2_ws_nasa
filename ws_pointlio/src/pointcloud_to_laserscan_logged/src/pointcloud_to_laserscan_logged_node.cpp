@@ -40,6 +40,7 @@ public:
       rclcpp::SensorDataQoS(),
       std::bind(&PointCloudToLaserScanLoggedNode::cloudCallback, this, std::placeholders::_1));
 
+    RCLCPP_INFO(this->get_logger(), "angle_inc to: %f", angle_increment_);
     RCLCPP_INFO(this->get_logger(), "Subscribed to: %s", input_topic_.c_str());
     RCLCPP_INFO(this->get_logger(), "Publishing scan to: %s", output_topic_.c_str());
   }
@@ -142,12 +143,12 @@ private:
         "cloud points=%zu converted=%zu filled_bins=%zu nanbad %zu zbad %zu rangebad %zu anglebad %zu indexbad %zu",
         total_points,
         converted_points,
+        filled_bins,
 	nanbad_points,
 	zbad_points,
 	rangebad_points,
 	anglebad_points,
-	indexbad_points,
-        filled_bins);
+	indexbad_points);
     }
 
     pub_->publish(std::move(scan_msg));
