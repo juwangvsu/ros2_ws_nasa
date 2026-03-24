@@ -9,15 +9,24 @@ alienserver 192.168.1.7 vsu, vsu@2026
 lidar   192.168.1.62
 
 ----  build note --------------
+(if ros2 key issue, check FAQ 3/24/26)
 sudo apt install ros-humble-pointcloud-to-laserscan
 sudo apt install -y ros-humble-slam-toolbox --allow-unauthenticated
 sudo apt install ros-humble-navigation2 ros-humble-nav2-bringup
+sudo apt install ros-humble-pcl-ros ros-humble-pcl-conversions ros-humble-visualization-msgs
+python3 -m pip install --user rosbags
+sudo apt install ros-humble-rosbag2-storage-default-plugins
 
 cd unilidar_sdk2/unitree_lidar_ros2/; colcon build
+  (unilidar_sdk2 binary optional)
 cd ws_pointlio/; 
 	colcon build
 	colcon build --symlink-install
 source ws_pointlio/install/setup.bash
+
+----------3/24/26/ regress test start_bagrun_docker.sh  --------------------
+hptitan, aliensrv
+  to be done
 
 ----------3/22/26/ start_nasa_full.sh  --------------------
 
@@ -286,6 +295,15 @@ note: tbt ros1 one another machine,
 ---FAQ-------------
 colcon:
 	apt install ros-dev-tools
+
+----ros2 update 3/24/26---------------
+  rm /etc/apt/sources.list.d/ros2.list
+  rm /etc/apt/sources.list.d/ros2*
+  apt update
+  curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key |   sudo gpg --dearmor -o /etc/apt/keyrings/ros-archive-keyring.gpg
+  echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/ros-archive-keyring.gpg] http://packages.ros.org/ros2/ubuntu jammy main" |   sudo tee /etc/apt/sources.list.d/ros2.list > /dev/null
+  apt update
+    
 
 sudo mkdir -p /etc/apt/keyrings
 
