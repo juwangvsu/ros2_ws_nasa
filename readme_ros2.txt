@@ -24,6 +24,15 @@ cd ws_pointlio/;
 	colcon build --symlink-install
 source ws_pointlio/install/setup.bash
 
+
+-----3/26/26 sabertooth driver -----------------
+cd ros2_ws_nasa
+ros2 launch sabertooth_2x32_serial sabertooth.launch.py  params_file:=sabertooth.yaml
+ros2 launch sabertooth_2x32_serial_twist sabertooth_twist.launch.py   params_file:=sabertooth_twist.yaml
+ros2 topic pub /motor_power std_msgs/msg/Float32MultiArray '{data: [0.2, 0.2]}' --once
+
+ros2 topic pub /cmd_vel geometry_msgs/msg/Twist   '{linear: {x: 0.2}, angular: {z: 0.0}}' --once
+
 ----------3/24/26/ regress test start_bagrun_docker.sh  --------------------
 hptitan, aliensrv
   to be done
