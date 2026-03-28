@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<package format="3">
+  <name>mdds30_serial_driver</name>
+  <version>0.1.0</version>
+  <description>ROS 2 Python driver for Cytron SmartDriveDuo-30 (MDDS30) in Serial Simplified mode via /dev/ttyUSB0.</description>
+  <maintainer email="jwang@vsu.edu">ju wang</maintainer>
+  <license>MIT</license>
+
+  <buildtool_depend>ament_python</buildtool_depend>
+
+  <depend>rclpy</depend>
+  <depend>geometry_msgs</depend>
+
+  <exec_depend>python3-serial</exec_depend>
+
+  <test_depend>ament_lint_auto</test_depend>
+  <test_depend>ament_lint_common</test_depend>
+
+  <export>
+    <build_type>ament_python</build_type>
+  </export>
+</package>
