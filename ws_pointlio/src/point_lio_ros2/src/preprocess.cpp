@@ -287,7 +287,7 @@ void Preprocess::unilidar_handler(const sensor_msgs::msg::PointCloud2::SharedPtr
 
       added_pt.curvature = pl_orig.points[i].time * time_unit_scale; 
 
-      if (added_pt.x * added_pt.x + added_pt.y * added_pt.y + added_pt.z * added_pt.z > (blind * blind))
+      if (added_pt.x * added_pt.x + added_pt.y * added_pt.y + added_pt.z * added_pt.z > (blind * blind) && added_pt.z < 2.0 && added_pt.z > 0.2)
       {
         pl_surf.points.push_back(added_pt);
       }
