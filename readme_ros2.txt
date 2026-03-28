@@ -24,6 +24,22 @@ cd ws_pointlio/;
 	colcon build --symlink-install
 source ws_pointlio/install/setup.bash
 
+-----3/27/26 start_bagrun_uni.sh bag6 -----------------
+./start_bagrun_uni.sh ~/bag6_systimefalse
+bag6:
+ 	recorded with use_system_time=False
+	unilidar_sdk2/unitree_lidar_ros2/src/unitree_lidar_ros2/launch/launch.py
+pointcloud_to_laserscan_uni.yaml:
+	max height 0.9 (kitchen ceiling low)
+result good.
+
+png:
+	slam_bag6.png
+
+note:
+	if use_system_time=True, bag data imu timestamp delta not consistent
+	if use_system_time=False, bag data imu timestamp delta much consistent
+	this might explain point_lio drift due to imu timestamp out of sync when use system time
 
 -----3/26/26 sabertooth driver -----------------
 cd ros2_ws_nasa
