@@ -1,0 +1,10 @@
+/deeplab_segmentation_node:
+  ros__parameters:
+    input_topic: /image_raw/compressed
+    input_is_compressed: true
+    mask_topic: /segmentation/mask
+    overlay_topic: /segmentation/overlay
+    obstacle_mask_topic: /segmentation/obstacle_mask
+    checkpoint_file: /home/robot/.cache/torch/hub/checkpoints/deeplabv3_resnet50_coco-cd0a2569.pth
+    obstacle_ignore_classes: ["background", "floor", "ground", "sky"]
+    log_detected_classes: true

@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<package format="3">
+  <name>deeplab_segmentation_ros2</name>
+  <version>0.0.3</version>
+  <description>ROS 2 DeepLabV3 segmentation node with raw or compressed input selection.</description>
+  <maintainer email="user@example.com">OpenAI</maintainer>
+  <license>MIT</license>
+
+  <exec_depend>rclpy</exec_depend>
+  <exec_depend>sensor_msgs</exec_depend>
+  <exec_depend>std_msgs</exec_depend>
+
+  <export>
+    <build_type>ament_python</build_type>
+  </export>
+</package>

@@ -347,3 +347,8 @@ curl -L -o /tmp/ros2-apt-source.deb "https://github.com/ros-infrastructure/ros-a
 sudo dpkg -i /tmp/ros2-apt-source.deb
 
 rm /var/lib/apt/lists/*ros*; apt update
+
+ 13 ros2 topic echo dropping msg:                                                                                 
+ 14   sudo apt update && sudo apt install ros-$ROS_DISTRO-rmw-cyclonedds-cpp                                      
+ 15   export RMW_IMPLEMENTATION=rmw_cyclonedds_cpp                                                                
+ 16   ros2 topic echo /imu/data --qos-reliability best_effort  
