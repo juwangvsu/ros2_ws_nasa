@@ -1,5 +1,7 @@
 #!/bin/bash
-gnome-terminal -x  $SHELL -ic "cd ~/; ros2 bag play msbuild/ --clock -r 0.8; bash"
+#./start_bagrun.sh ~/msbuild
+
+gnome-terminal -x  $SHELL -ic "cd ~/; ros2 bag play $1 --clock -r 0.8; bash"
 gnome-terminal -x  $SHELL -ic "ros2 run tf2_ros static_transform_publisher --x 0 --y 0 --z 0 --yaw 0 --pitch 0 --roll 0 --frame-id baal/imu_initial --child-frame-id baal/imu ; bash"
 gnome-terminal -x  $SHELL -ic "ros2 run tf2_ros static_transform_publisher --x 0 --y 0 --z 0 --yaw 0 --pitch 0 --roll 0 --frame-id baal/imu --child-frame-id baal/base; bash"
 

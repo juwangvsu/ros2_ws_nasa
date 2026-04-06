@@ -24,6 +24,17 @@ cd ws_pointlio/;
 	colcon build --symlink-install
 source ws_pointlio/install/setup.bash
 
+-----3/28/26 point_lio test bag7_egr hm20ea -----------------
+result is good
+
+-----3/27/26 datasets -----------------
+bag6_systimefalse
+bag7_egr/
+bag6_systimefalse/
+bag4_panda/
+
+msbuild
+hm20ea
 -----3/27/26 start_bagrun_uni.sh bag6 -----------------
 ./start_bagrun_uni.sh ~/bag6_systimefalse
 bag6:
