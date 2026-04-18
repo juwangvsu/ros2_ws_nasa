@@ -1,0 +1,81 @@
+<?xml version="1.0" ?>
+<sdf version="1.6">
+  <model name="tag_wall">
+    <static>true</static>
+    <pose>0 0 0 0 0 0</pose>
+
+    <link name="wall">
+      <collision name="wall_collision">
+        <pose>3 0 1.0 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>0.05 3.0 1.5</size>
+          </box>
+        </geometry>
+      </collision>
+      <visual name="wall_visual">
+        <pose>3 0 1.0 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>0.05 3.0 1.5</size>
+          </box>
+        </geometry>
+        <material>
+          <ambient>0.9 0.9 0.9 1</ambient>
+          <diffuse>0.9 0.9 0.9 1</diffuse>
+        </material>
+      </visual>
+
+      <visual name="tag_0_panel">
+        <pose>2.84 -1.0 0.5 0 -1.57079632679 0</pose>
+        <geometry>
+          <plane>
+            <normal>0 0 1</normal>
+            <size>0.30 0.30</size>
+          </plane>
+        </geometry>
+        <material>
+          <script>
+            <uri>model://tag_wall/materials/scripts</uri>
+            <uri>model://tag_wall/materials/textures</uri>
+            <name>TagWall/Tag0</name>
+          </script>
+        </material>
+      </visual>
+
+      <visual name="tag_1_panel">
+        <pose>2.84 0.0 0.5 0 -1.57079632679 0</pose>
+        <geometry>
+          <plane>
+            <normal>0 0 1</normal>
+            <size>0.30 0.30</size>
+          </plane>
+        </geometry>
+        <material>
+          <script>
+            <uri>model://tag_wall/materials/scripts</uri>
+            <uri>model://tag_wall/materials/textures</uri>
+            <name>TagWall/Tag1</name>
+          </script>
+        </material>
+      </visual>
+
+      <visual name="tag_2_panel">
+        <pose>2.84 1.0 0.5 0 -1.57 0</pose>
+        <geometry>
+          <plane>
+            <normal>0 1 0</normal>
+            <size>0.30 0.30</size>
+          </plane>
+        </geometry>
+        <material>
+          <script>
+            <uri>model://tag_wall/materials/scripts</uri>
+            <uri>model://tag_wall/materials/textures</uri>
+            <name>TagWall/Tag2</name>
+          </script>
+        </material>
+      </visual>
+    </link>
+  </model>
+</sdf>

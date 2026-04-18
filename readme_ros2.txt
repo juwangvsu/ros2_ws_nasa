@@ -17,6 +17,13 @@ sudo apt install ros-humble-pcl-ros ros-humble-pcl-conversions ros-humble-visual
 python3 -m pip install --user rosbags
 sudo apt install ros-humble-rosbag2-storage-default-plugins
 
+-------------------------------------------------------
+hplaptop
+chatgpt:
+	https://chatgpt.com/g/g-p-69a50c866d248191a5290b56b1f044d0/c/69e2edce-abd8-832e-a353-85512fd463de
+4/17/26: apriltag:
+	sudo apt install   ros-humble-ros-gz-sim   ros-humble-ros-gz-bridge   ros-humble-tf-transformations ros-humble-apriltag-ros
+	sudo apt install ros-humble-image-proc
 cd unilidar_sdk2/unitree_lidar_ros2/; colcon build
   (unilidar_sdk2 binary optional)
 cd ws_pointlio/; 
@@ -24,6 +31,15 @@ cd ws_pointlio/;
 	colcon build --symlink-install
 source ws_pointlio/install/setup.bash
 
+gazebo sim:
+	ros2 launch fiducial_tb3_gazebo_demo sim_mapping_anchor.launch.py
+
+./humble/share/turtlebot3_gazebo/models/turtlebot3_waffle/model.sdf
+	lidar range change
+
+status:
+	rviz 3 apriltags show at high z. check apriltag node tf part
+ 
 -----3/28/26 point_lio test bag7_egr hm20ea -----------------
 result is good
 

@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<sdf version="1.6">
+  <model name="apriltag_cube_0">
+    <static>true</static>
+    <link name="cube_link">
+      <pose>0 0 0 0 0 0</pose>
+      <collision name="collision">
+        <geometry>
+          <box>
+            <size>0.4 0.4 0.4</size>
+          </box>
+        </geometry>
+      </collision>
+      <visual name="visual">
+        <geometry>
+          <box>
+            <size>0.4 0.4 0.4</size>
+          </box>
+        </geometry>
+        <material>
+          <script>
+            <uri>model://apriltag_cube_0/materials/scripts</uri>
+            <uri>model://apriltag_cube_0/materials/textures</uri>
+            <name>AprilTag/Cube0</name>
+          </script>
+        </material>
+        <cast_shadows>false</cast_shadows>
+      </visual>
+    </link>
+  </model>
+</sdf>

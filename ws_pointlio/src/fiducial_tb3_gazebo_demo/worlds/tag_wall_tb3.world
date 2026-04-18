@@ -1,0 +1,35 @@
+<?xml version="1.0" ?>
+<sdf version="1.6">
+  <world name="default">
+    <include>
+      <uri>model://ground_plane</uri>
+    </include>
+    <include>
+      <uri>model://sun</uri>
+    </include>
+    <include>
+      <uri>model://tag_wall</uri>
+    </include>
+    <include>
+      <uri>model://apriltag_cube_0</uri>
+      <name>apriltag_cube_0</name>
+      <pose>0 4 0.2 0 0 0</pose>
+    </include>
+    <include>
+      <uri>model://apriltag_cube_1</uri>
+      <name>apriltag_cube_1</name>
+      <pose>1.5 4 0.2 0 0 0</pose>
+    </include>
+    <include>
+      <uri>model://apriltag_cube_2</uri>
+      <name>apriltag_cube_2</name>
+      <pose>3 4 0.2 0 0 0</pose>
+    </include>
+
+    <gui fullscreen="0">
+      <camera name="user_camera">
+        <pose>0.5 -4 2.2 0 0.35 1.57</pose>
+      </camera>
+    </gui>
+  </world>
+</sdf>

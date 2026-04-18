@@ -1,0 +1,16 @@
+material AprilTag/Cube0
+{
+  technique
+  {
+    pass
+    {
+      lighting off
+      texture_unit
+      {
+        texture tag_0.png
+        filtering anisotropic
+        max_anisotropy 16
+      }
+    }
+  }
+}

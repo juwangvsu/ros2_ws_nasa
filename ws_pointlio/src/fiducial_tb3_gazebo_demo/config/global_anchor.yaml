@@ -1,0 +1,13 @@
+global_anchor_node:
+  ros__parameters:
+    global_frame: global
+    map_frame: map
+    base_frame: base_footprint
+    camera_frame: camera_rgb_frame
+    required_tag_count: 2
+    required_tag_ids: [0, 1, 2]
+    tag_frames: ['tag_0', 'tag_1', 'tag_2']
+    # Three wall-mounted tags at x=3.0, z=0.5, horizontally spaced by 1 m.
+    tag_positions_xy: [3.0, -1.0, 3.0, 0.0, 3.0, 1.0]
+    republish_period_sec: 0.5
+    publish_debug_pose: true
