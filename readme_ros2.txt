@@ -39,7 +39,27 @@ gazebo sim:
 
 status:
 	rviz 3 apriltags show at high z. check apriltag node tf part
- 
+tf:
+	    frame_id: camera_rgb_frame , child_frame_id: tag_0
+    translation:
+      x: 1.0064057635607098
+      y: -0.40478559576992296
+      z: 2.7377474567851254
+
+image_raw fame: camera_rgb_frame
+	pub node: camera_driver
+image_rect frame: camera_rgb_frame
+	pub node: Node name: rectify 
+fix:
+	optical frame:
+	cp ~/ros2_ws_nasa/tb3_model.sdf to /opt/ros/humble/share/turtlebot3_gazebo/./models/turtlebot3_waffle/model.sdf
+
+apritag node only receive image_rect sporadically, and update tf every 15 seconds or so.
+	image_raw 6hz, image_rect 0.7 hz, 
+	gzserver and gzclient eat up cpu
+	kill gzclient help
+	apriltag node sub to image_raw might help
+	turn off rviz image view
 -----3/28/26 point_lio test bag7_egr hm20ea -----------------
 result is good
 

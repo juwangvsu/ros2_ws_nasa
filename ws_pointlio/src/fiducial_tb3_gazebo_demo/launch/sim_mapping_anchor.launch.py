@@ -70,6 +70,12 @@ def generate_launch_description():
             name='base_to_camera_tf',
             arguments=['0.069', '-0.047', '0.107', '0', '0', '0', 'base_footprint', 'camera_rgb_frame'],
         ),
+        Node(
+            package='tf2_ros',
+            executable='static_transform_publisher',
+            name='camera_frame_to_camera_optical',
+            arguments=['0.0', '-0.0', '0.0', '1.57079632679', '0', '1.57079632679', 'camera_rgb_frame', 'camera_rgb_optical_frame'],
+        ),
 
         Node(
             package='image_proc',
@@ -89,7 +95,7 @@ def generate_launch_description():
             executable='apriltag_node',
             name='apriltag',
             remappings=[
-                ('image_rect', '/camera/image_rect'),
+                ('image_rect', '/camera/image_raw'),
                 ('camera_info', '/camera/camera_info'),
             ],
             parameters=[apriltag_cfg, {'use_sim_time': LaunchConfiguration('use_sim_time')}],
