@@ -1,0 +1,44 @@
+material TagWall/Tag0
+{
+  technique
+  {
+    pass
+    {
+      lighting off
+      texture_unit
+      {
+        texture tag_0.png
+      }
+    }
+  }
+}
+
+material TagWall/Tag1
+{
+  technique
+  {
+    pass
+    {
+      lighting off
+      texture_unit
+      {
+        texture tag_1.png
+      }
+    }
+  }
+}
+
+material TagWall/Tag2
+{
+  technique
+  {
+    pass
+    {
+      lighting off
+      texture_unit
+      {
+        texture tag_2.png
+      }
+    }
+  }
+}
