@@ -3,7 +3,7 @@
 ROS 2 package to:
 - republish Point-LIO TF `camera_init -> aft_mapped` as `odom -> base_link`
 - publish `/odom` as `nav_msgs/msg/Odometry`
-- publish a static TF `base_link -> baal/base` at launch
+- publish a static TF `base_link -> baal/imu_initial` at launch
 
 ## Build
 ```bash

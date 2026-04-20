@@ -4,7 +4,7 @@
     family: 36h11
     size: 0.30
     max_hamming: 0
-    z_up: false
+    z_up: true
     publish_tf: true
     tag:
       ids: [0, 1, 2]

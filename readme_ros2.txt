@@ -17,7 +17,11 @@ sudo apt install ros-humble-pcl-ros ros-humble-pcl-conversions ros-humble-visual
 python3 -m pip install --user rosbags
 sudo apt install ros-humble-rosbag2-storage-default-plugins
 
--------------------------------------------------------
+-----------4/19/26 tf if lidar is not level --------------
+
+check 3/14/26 tf
+
+-----------4/18/26 fiducial apriltag tf------------------------------------
 hplaptop
 chatgpt:
 	https://chatgpt.com/g/g-p-69a50c866d248191a5290b56b1f044d0/c/69e2edce-abd8-832e-a353-85512fd463de
@@ -34,6 +38,8 @@ source ws_pointlio/install/setup.bash
 gazebo sim:
 	ros2 launch fiducial_tb3_gazebo_demo sim_mapping_anchor.launch.py
 
+export GAZEBO_MODEL_PATH=$GAZEBO_MODEL_PATH:/media/student/data5/ros2_ws_nasa/ws_pointlio/src/fiducial_tb3_gazebo_demo/models
+
 ./humble/share/turtlebot3_gazebo/models/turtlebot3_waffle/model.sdf
 	lidar range change
 
@@ -41,11 +47,12 @@ status:
 	rviz 3 apriltags show at high z. check apriltag node tf part
 tf:
 	    frame_id: camera_rgb_frame , child_frame_id: tag_0
-    translation:
-      x: 1.0064057635607098
-      y: -0.40478559576992296
-      z: 2.7377474567851254
 
+apriltag pose:
+	tag_wall/model.sdf gazebo (0.2, 0.1, 0.5), (1.0, 0.1, 0.5), (1.85, 0.1, 0.5)
+	config/global_anchor.yaml tag_positions_xy: [0.15, 0.0, 1.0, 0.0, 1.85, 0.0]
+
+	
 image_raw fame: camera_rgb_frame
 	pub node: camera_driver
 image_rect frame: camera_rgb_frame
@@ -54,12 +61,31 @@ fix:
 	optical frame:
 	cp ~/ros2_ws_nasa/tb3_model.sdf to /opt/ros/humble/share/turtlebot3_gazebo/./models/turtlebot3_waffle/model.sdf
 
+tf tree:
+	use_sim_time should be true for all tf when using gazebo	
+	gazebo:
+		odom -> base_footprint
+	static tf:(launch file), 
+		base_footprint -> base_scan, base_footprint -> camera_rgb_frame, camera_rgb_frame -> camera_rgb_optical_frame
+	slam_toolbox: map -> odom
+	anchor node: global -> map
+		use tag tf from aptriltag node
+	apriltag node: camera_rgb_optical_frame->tag_0, tag_1, tag_2
+	
+	rviz2 should also use_sim_time:=true
+	ros2 run rviz2 rviz2 --ros-args -p use_sim_time
+global_anchor_node (your custom node)
+	Inputs: AprilTag TF or detection array
+		TF lookups for map -> base_link
+	Outputs:
+		global -> map transform
 apritag node only receive image_rect sporadically, and update tf every 15 seconds or so.
 	image_raw 6hz, image_rect 0.7 hz, 
 	gzserver and gzclient eat up cpu
 	kill gzclient help
 	apriltag node sub to image_raw might help
 	turn off rviz image view
+
 -----3/28/26 point_lio test bag7_egr hm20ea -----------------
 result is good
 
@@ -144,8 +170,12 @@ after this fix full stack seems to run well
 ----- 3/14/26 tf who publish what start_nasa_full.sh--------------------
 lidar_driver:
   commented off the tf publishing part,
-  two static publish nodes
+
+two static publish nodes in shell script
   baal/imu_initial -> baal/imu -> baal/base
+  this is to chain up so tf cloud data can be resolved, frame_id of
+	/unilidar/cloud is "/baal/base" for compatible with other lidar
+	might change in the future.
   use_system_time true is ok,
 
 point_lio:
@@ -156,12 +186,20 @@ point_cloud_laserscan:
   target_frame in params file
   needed tf:
     frame_id (cloud_in) -> target_frame
+	??? deal with floor pts should be in odom frame first?
+	currently dealing in the lidar frame, big problem if lidar is not level.
+
 pointlio_tf_bridge_uni repub node:
   tf pub:
   odom -> base_link
+
 pointlio_tf_bridge_uni static tf node:
   tf pub:
   base_link -> baal/imu_initial
+	4/19/26 this is where the actual lidar pose
+	should be added so a tilted lidar data can be show correctly
+	so better here, not in the shell script?
+	
 slam_toolbox:
   tf pub:
     map->odom

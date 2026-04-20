@@ -8,22 +8,28 @@
       <uri>model://sun</uri>
     </include>
     <include>
+      <uri>model://west_wall</uri>
+    </include>
+    <include>
+      <uri>model://east_wall</uri>
+    </include>
+    <include>
       <uri>model://tag_wall</uri>
     </include>
     <include>
       <uri>model://apriltag_cube_0</uri>
       <name>apriltag_cube_0</name>
-      <pose>0 4 0.2 0 0 0</pose>
+      <pose>8 2 0.2 0 0 0</pose>
     </include>
     <include>
       <uri>model://apriltag_cube_1</uri>
       <name>apriltag_cube_1</name>
-      <pose>1.5 4 0.2 0 0 0</pose>
+      <pose>8 4 0.2 0 0 0</pose>
     </include>
     <include>
       <uri>model://apriltag_cube_2</uri>
       <name>apriltag_cube_2</name>
-      <pose>3 4 0.2 0 0 0</pose>
+      <pose>8 6 0.2 0 0 0</pose>
     </include>
 
     <gui fullscreen="0">
