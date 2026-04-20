@@ -57,18 +57,18 @@ def generate_launch_description():
             arguments=['-entity', 'tb3_waffle', '-file', robot_sdf, '-x', '1.0', '-y', '3.0', '-z', '0.02', '-Y', '-1.57'],
             output='screen'
         ),
-        #Node(
-        #    package='tf2_ros',
-        #    executable='static_transform_publisher',
-        #    name='base_to_scan_tf',
-        #    arguments=['-0.064', '0.0', '0.121', '0', '0', '0', 'base_link', 'base_scan'],
-        #    parameters=[{'use_sim_time': LaunchConfiguration('use_sim_time')}]
-        #),
         Node(
             package='tf2_ros',
             executable='static_transform_publisher',
-            name='base_to_footprint',
-            arguments=['-0.064', '0.0', '0.121', '0', '0', '0', 'base_link', 'base_footprint'],
+            name='base_to_scan_tf',
+            arguments=['-0.064', '0.0', '0.121', '0', '0', '0', 'base_link', 'base_scan'],
+            parameters=[{'use_sim_time': LaunchConfiguration('use_sim_time')}]
+        ),
+        Node(
+            package='tf2_ros',
+            executable='static_transform_publisher',
+            name='base_footprint_to',
+            arguments=['-0.064', '0.0', '0.121', '0', '0', '0', 'base_footprint', 'base_link'],
             parameters=[{'use_sim_time': LaunchConfiguration('use_sim_time')}]
         ),
         Node(
@@ -86,38 +86,38 @@ def generate_launch_description():
             parameters=[{'use_sim_time': LaunchConfiguration('use_sim_time')}]
         ),
 
-        #Node(
-        #    package='image_proc',
-        #    executable='rectify_node',
-        #    name='rectify',
-        #    remappings=[
-        #        ('image', '/camera/image_raw'),
-        #        ('camera_info', '/camera/camera_info'),
-        #        ('image_rect', '/camera/image_rect'),
-        #    ],
-        #    parameters=[{'use_sim_time': LaunchConfiguration('use_sim_time')}],
-        #    output='screen',
-        #),
+        Node(
+            package='image_proc',
+            executable='rectify_node',
+            name='rectify',
+            remappings=[
+                ('image', '/camera/image_raw'),
+                ('camera_info', '/camera/camera_info'),
+                ('image_rect', '/camera/image_rect'),
+            ],
+            parameters=[{'use_sim_time': LaunchConfiguration('use_sim_time')}],
+            output='screen',
+        ),
 
-        #Node(
-        #    package='apriltag_ros',
-        #    executable='apriltag_node',
-        #    name='apriltag',
-        #    remappings=[
-        #        ('image_rect', '/camera/image_raw'),
-        #        ('camera_info', '/camera/camera_info'),
-        #    ],
-        #    parameters=[apriltag_cfg, {'use_sim_time': LaunchConfiguration('use_sim_time')}],
-        #    output='screen',
-        #),
+        Node(
+            package='apriltag_ros',
+            executable='apriltag_node',
+            name='apriltag',
+            remappings=[
+                ('image_rect', '/camera/image_raw'),
+                ('camera_info', '/camera/camera_info'),
+            ],
+            parameters=[apriltag_cfg, {'use_sim_time': LaunchConfiguration('use_sim_time')}],
+            output='screen',
+        ),
 
-        #Node(
-        #    package='slam_toolbox',
-        #    executable='async_slam_toolbox_node',
-        #    name='slam_toolbox',
-        #    parameters=[slam_cfg, {'use_sim_time': LaunchConfiguration('use_sim_time')}],
-        #    output='screen',
-        #),
+        Node(
+            package='slam_toolbox',
+            executable='async_slam_toolbox_node',
+            name='slam_toolbox',
+            parameters=[slam_cfg, {'use_sim_time': LaunchConfiguration('use_sim_time')}],
+            output='screen',
+        ),
 
         Node(
             package='fiducial_tb3_gazebo_demo',

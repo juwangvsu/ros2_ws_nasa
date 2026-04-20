@@ -38,9 +38,9 @@ source ws_pointlio/install/setup.bash
 gazebo sim:
 	ros2 launch fiducial_tb3_gazebo_demo sim_mapping_anchor.launch.py
 
-export GAZEBO_MODEL_PATH=$GAZEBO_MODEL_PATH:/media/student/data5/ros2_ws_nasa/ws_pointlio/src/fiducial_tb3_gazebo_demo/models
+export GAZEBO_MODEL_PATH=$GAZEBO_MODEL_PATH:~/ros2_ws_nasa/ws_pointlio/src/fiducial_tb3_gazebo_demo/models
 
-./humble/share/turtlebot3_gazebo/models/turtlebot3_waffle/model.sdf
+/opt/ros/humble/share/turtlebot3_gazebo/models/turtlebot3_waffle/model.sdf
 	lidar range change
 
 status:
@@ -73,7 +73,7 @@ tf tree:
 	apriltag node: camera_rgb_optical_frame->tag_0, tag_1, tag_2
 	
 	rviz2 should also use_sim_time:=true
-	ros2 run rviz2 rviz2 --ros-args -p use_sim_time
+	ros2 run rviz2 rviz2 --ros-args -p use_sim_time:=true
 global_anchor_node (your custom node)
 	Inputs: AprilTag TF or detection array
 		TF lookups for map -> base_link
@@ -85,6 +85,25 @@ apritag node only receive image_rect sporadically, and update tf every 15 second
 	kill gzclient help
 	apriltag node sub to image_raw might help
 	turn off rviz image view
+
+ 4/20 alienlaptop: after rviz2 with use_sim_time, it seems work better, in map frame, things work perfect
+  in odom frame, some issue if give a far goal:
+    [planner_server-3] [ERROR] [1776720688.181048161] [transformPoseInTargetFrame]: Extrapolation Error 
+looking up target frame: Lookup would require extrapolation into the past.  
+Requested time 743.300000 but the earliest data is at time 775.758000, 
+when looking up transform from frame [odom] to frame [map]
+[planner_server-3] 
+
+when click on rviz2: it generate a msg,
+  to view: ros2 topic echo /goal_pose
+    depending on current rviz frame, the goal_pose msg will have that frame_id.
+  planner_server will need to find tf btw map and that frame_id in the msg, that is why planner work 
+  no issue when rviz2 in map frame, but might fail in other frame_id
+  the timestamp will be system or sim time, depending on use_sim_time setting when run rviz2
+
+model.sdf: slam
+  slam need the following in a chain: odom->base_link->base_scan
+            odom->base_footprint->base_link->base_scan also ok
 
 -----3/28/26 point_lio test bag7_egr hm20ea -----------------
 result is good
