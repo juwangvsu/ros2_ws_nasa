@@ -46,17 +46,17 @@ def generate_launch_description():
         SetEnvironmentVariable('GAZEBO_MODEL_PATH', model_path),
         SetEnvironmentVariable('GAZEBO_RESOURCE_PATH', resource_path),
 
-        IncludeLaunchDescription(
-            PythonLaunchDescriptionSource(os.path.join(gazebo_ros_share, 'launch', 'gazebo.launch.py')),
-            launch_arguments={'world': world, 'verbose': 'true'}.items(),
-        ),
+        #IncludeLaunchDescription(
+        #    PythonLaunchDescriptionSource(os.path.join(gazebo_ros_share, 'launch', 'gazebo.launch.py')),
+        #    launch_arguments={'world': world, 'verbose': 'true'}.items(),
+        #),
 
-        Node(
-            package='gazebo_ros',
-            executable='spawn_entity.py',
-            arguments=['-entity', 'tb3_waffle', '-file', robot_sdf, '-x', '1.0', '-y', '3.0', '-z', '0.02', '-Y', '-1.57'],
-            output='screen'
-        ),
+        #Node(
+        #    package='gazebo_ros',
+        #    executable='spawn_entity.py',
+        #    arguments=['-entity', 'tb3_waffle', '-file', robot_sdf, '-x', '1.0', '-y', '3.0', '-z', '0.02', '-Y', '-1.57'],
+        #    output='screen'
+        #),
         Node(
             package='tf2_ros',
             executable='static_transform_publisher',
@@ -111,13 +111,13 @@ def generate_launch_description():
             output='screen',
         ),
 
-        Node(
-            package='slam_toolbox',
-            executable='async_slam_toolbox_node',
-            name='slam_toolbox',
-            parameters=[slam_cfg, {'use_sim_time': LaunchConfiguration('use_sim_time')}],
-            output='screen',
-        ),
+        #Node(
+        #    package='slam_toolbox',
+        #    executable='async_slam_toolbox_node',
+        #    name='slam_toolbox',
+        #    parameters=[slam_cfg, {'use_sim_time': LaunchConfiguration('use_sim_time')}],
+        #    output='screen',
+        #),
 
         Node(
             package='fiducial_tb3_gazebo_demo',
