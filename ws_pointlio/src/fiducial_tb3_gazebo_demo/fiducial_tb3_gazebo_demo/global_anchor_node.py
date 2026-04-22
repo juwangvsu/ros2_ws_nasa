@@ -40,6 +40,7 @@ class GlobalAnchorNode(Node):
         self.declare_parameter('tag_frames', ['tag_0', 'tag_1', 'tag_2'])
         self.declare_parameter('tag_positions_xy', [3.0, -1.0, 3.0, 0.0, 3.0, 1.0])
         self.declare_parameter('republish_period_sec', 0.5)
+        self.declare_parameter('tick_interval', 1.0)
         self.declare_parameter('publish_debug_pose', True)
 
         self.global_frame = self.get_parameter('global_frame').value
@@ -47,6 +48,7 @@ class GlobalAnchorNode(Node):
         self.base_frame = self.get_parameter('base_frame').value
         self.camera_frame = self.get_parameter('camera_frame').value
         self.required_tag_count = int(self.get_parameter('required_tag_count').value)
+        self.tick_interval = float(self.get_parameter('tick_interval').value)
         tag_ids = list(self.get_parameter('required_tag_ids').value)
         tag_frames = list(self.get_parameter('tag_frames').value)
         flat = list(self.get_parameter('tag_positions_xy').value)
@@ -55,6 +57,7 @@ class GlobalAnchorNode(Node):
             self.tag_global_xy[frame] = (float(flat[2 * i]), float(flat[2 * i + 1]))
         self.required_frames = list(self.tag_global_xy.keys())
 
+        self.tick_count=0
         self.go_received = False
         self.anchor_locked = False
         self.anchor_tf: Optional[TransformStamped] = None
@@ -64,7 +67,7 @@ class GlobalAnchorNode(Node):
         self.tf_broadcaster = TransformBroadcaster(self)
         self.debug_pub = self.create_publisher(PoseStamped, '/global_anchor/debug_base_pose', 10)
         self.usercmd_sub = self.create_subscription(String, '/usercmd', self.usercmd_cb, 10)
-        self.timer = self.create_timer(0.2, self.tick)
+        self.timer = self.create_timer(self.tick_interval, self.tick)
         self.repub_timer = self.create_timer(float(self.get_parameter('republish_period_sec').value), self.republish)
 
         self.get_logger().info('Waiting for at least two visible AprilTags and /usercmd == go')
@@ -85,6 +88,8 @@ class GlobalAnchorNode(Node):
         return visible
 
     def tick(self):
+        self.tick_count+=1
+        self.get_logger().info(f"global anchor # {self.tick_count} tick_interval {self.tick_interval}")
         if self.anchor_locked:
             return
 

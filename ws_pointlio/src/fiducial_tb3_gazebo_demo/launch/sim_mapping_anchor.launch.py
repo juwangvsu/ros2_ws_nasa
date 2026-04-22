@@ -86,18 +86,18 @@ def generate_launch_description():
             parameters=[{'use_sim_time': LaunchConfiguration('use_sim_time')}]
         ),
 
-        Node(
-            package='image_proc',
-            executable='rectify_node',
-            name='rectify',
-            remappings=[
-                ('image', '/camera/image_raw'),
-                ('camera_info', '/camera/camera_info'),
-                ('image_rect', '/camera/image_rect'),
-            ],
-            parameters=[{'use_sim_time': LaunchConfiguration('use_sim_time')}],
-            output='screen',
-        ),
+        #Node(
+        #    package='image_proc',
+        #    executable='rectify_node',
+        #    name='rectify',
+        #    remappings=[
+        #        ('image', '/camera/image_raw'),
+        #        ('camera_info', '/camera/camera_info'),
+        #        ('image_rect', '/camera/image_rect'),
+        #    ],
+        #    parameters=[{'use_sim_time': LaunchConfiguration('use_sim_time')}],
+        #    output='screen',
+        #),
 
         Node(
             package='apriltag_ros',

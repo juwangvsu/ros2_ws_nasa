@@ -100,7 +100,7 @@ when click on rviz2: it generate a msg,
   planner_server will need to find tf btw map and that frame_id in the msg, that is why planner work 
   no issue when rviz2 in map frame, but might fail in other frame_id
   the timestamp will be system or sim time, depending on use_sim_time setting when run rviz2
-
+  this is almost always cpu load issue, gazebo and apriltag taking too much. tb3_model.sdf update_rate=10 fixed much of cpu load issue
 model.sdf: slam
   slam need the following in a chain: odom->base_link->base_scan
             odom->base_footprint->base_link->base_scan also ok
