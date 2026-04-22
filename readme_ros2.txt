@@ -17,6 +17,11 @@ sudo apt install ros-humble-pcl-ros ros-humble-pcl-conversions ros-humble-visual
 python3 -m pip install --user rosbags
 sudo apt install ros-humble-rosbag2-storage-default-plugins
 
+----4/22/26 webcam apriltag real test -----
+
+start_apriltagreal.sh
+cp -r camera_info ~/.ros/
+
 -----------4/19/26 tf if lidar is not level --------------
 
 check 3/14/26 tf
