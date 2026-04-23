@@ -2,11 +2,11 @@
   ros__parameters:
     image_transport: raw
     family: 36h11
-    size: 0.20
+    size: 0.30
     max_hamming: 0
     z_up: true
     publish_tf: true
     tag:
       ids: [0, 1, 2]
       frames: ['tag_0', 'tag_1', 'tag_2']
-      sizes: [0.20, 0.20, 0.20]
+      sizes: [0.30, 0.30, 0.30]

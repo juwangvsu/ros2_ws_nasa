@@ -6,28 +6,15 @@ from launch.actions import DeclareLaunchArgument, IncludeLaunchDescription, SetE
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.substitutions import LaunchConfiguration
 from launch_ros.actions import Node
-from launch.substitutions import LaunchConfiguration, PathJoinSubstitution
-from launch_ros.substitutions import FindPackageShare
+
 
 def generate_launch_description():
-    apriltagconfig_path = DeclareLaunchArgument(
-        'apriltag_cfg',
-        default_value='apriltag.yaml',
-        description='Path to the camera calibration YAML file'
-    )
-    apriltag_cfgfn = LaunchConfiguration('apriltag_cfg')
-
     pkg_share = get_package_share_directory('fiducial_tb3_gazebo_demo')
     tb3_gazebo_share = get_package_share_directory('turtlebot3_gazebo')
     gazebo_ros_share = get_package_share_directory('gazebo_ros')
 
     world = os.path.join(pkg_share, 'worlds', 'tag_wall_tb3.world')
-    #apriltag_cfg = os.path.join(pkg_share, 'config', apriltag_cfgfn)
-    apriltag_cfg = PathJoinSubstitution([
-        FindPackageShare('fiducial_tb3_gazebo_demo'),
-        'config',
-        apriltag_cfgfn
-    ])
+    apriltag_cfg = os.path.join(pkg_share, 'config', 'apriltag.yaml')
     slam_cfg = os.path.join(pkg_share, 'config', 'slam_toolbox_mapping.yaml')
     anchor_cfg = os.path.join(pkg_share, 'config', 'global_anchor.yaml')
 
@@ -59,31 +46,6 @@ def generate_launch_description():
         SetEnvironmentVariable('GAZEBO_MODEL_PATH', model_path),
         SetEnvironmentVariable('GAZEBO_RESOURCE_PATH', resource_path),
 
-        #IncludeLaunchDescription(
-        #    PythonLaunchDescriptionSource(os.path.join(gazebo_ros_share, 'launch', 'gazebo.launch.py')),
-        #    launch_arguments={'world': world, 'verbose': 'true'}.items(),
-        #),
-
-        #Node(
-        #    package='gazebo_ros',
-        #    executable='spawn_entity.py',
-        #    arguments=['-entity', 'tb3_waffle', '-file', robot_sdf, '-x', '1.0', '-y', '3.0', '-z', '0.02', '-Y', '-1.57'],
-        #    output='screen'
-        #),
-        Node(
-            package='tf2_ros',
-            executable='static_transform_publisher',
-            name='base_to_scan_tf',
-            arguments=['-0.064', '0.0', '0.121', '0', '0', '0', 'base_link', 'base_scan'],
-            parameters=[{'use_sim_time': LaunchConfiguration('use_sim_time')}]
-        ),
-        Node(
-            package='tf2_ros',
-            executable='static_transform_publisher',
-            name='base_footprint_to',
-            arguments=['-0.064', '0.0', '0.121', '0', '0', '0', 'base_footprint', 'base_link'],
-            parameters=[{'use_sim_time': LaunchConfiguration('use_sim_time')}]
-        ),
         Node(
             package='tf2_ros',
             executable='static_transform_publisher',
@@ -99,19 +61,6 @@ def generate_launch_description():
             parameters=[{'use_sim_time': LaunchConfiguration('use_sim_time')}]
         ),
 
-        #Node(
-        #    package='image_proc',
-        #    executable='rectify_node',
-        #    name='rectify',
-        #    remappings=[
-        #        ('image', '/camera/image_raw'),
-        #        ('camera_info', '/camera/camera_info'),
-        #        ('image_rect', '/camera/image_rect'),
-        #    ],
-        #    parameters=[{'use_sim_time': LaunchConfiguration('use_sim_time')}],
-        #    output='screen',
-        #),
-
         Node(
             package='apriltag_ros',
             executable='apriltag_node',
@@ -123,14 +72,6 @@ def generate_launch_description():
             parameters=[apriltag_cfg, {'use_sim_time': LaunchConfiguration('use_sim_time')}],
             output='screen',
         ),
-
-        #Node(
-        #    package='slam_toolbox',
-        #    executable='async_slam_toolbox_node',
-        #    name='slam_toolbox',
-        #    parameters=[slam_cfg, {'use_sim_time': LaunchConfiguration('use_sim_time')}],
-        #    output='screen',
-        #),
 
         Node(
             package='fiducial_tb3_gazebo_demo',

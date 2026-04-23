@@ -22,6 +22,8 @@ sudo apt install ros-humble-rosbag2-storage-default-plugins
 start_apriltagreal.sh
 cp -r camera_info ~/.ros/
 
+see readme_apriltag.txt
+
 -----------4/19/26 tf if lidar is not level --------------
 
 check 3/14/26 tf
