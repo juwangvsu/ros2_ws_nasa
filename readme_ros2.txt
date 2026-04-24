@@ -14,6 +14,7 @@ sudo apt install ros-humble-pointcloud-to-laserscan
 sudo apt install -y ros-humble-slam-toolbox --allow-unauthenticated
 sudo apt install ros-humble-navigation2 ros-humble-nav2-bringup
 sudo apt install ros-humble-pcl-ros ros-humble-pcl-conversions ros-humble-visualization-msgs
+sudo apt install ros-humble-turtlebot3-gazebo
 python3 -m pip install --user rosbags
 sudo apt install ros-humble-rosbag2-storage-default-plugins
 
