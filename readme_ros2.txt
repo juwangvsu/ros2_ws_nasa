@@ -464,3 +464,10 @@ rm /var/lib/apt/lists/*ros*; apt update
  14   sudo apt update && sudo apt install ros-$ROS_DISTRO-rmw-cyclonedds-cpp                                      
  15   export RMW_IMPLEMENTATION=rmw_cyclonedds_cpp                                                                
  16   ros2 topic echo /imu/data --qos-reliability best_effort  
+
+----------------------FAQ ros2 multiple network-------
+a ros2 machine have a wifi connection and a local ethernet network. the ros2 topic is not able to go accross the wifi
+
+fix:
+  export CYCLONEDDS_URI=file:///home/robot/ros2_ws_nasa/cyclonedds.xml
+    ...<NetworkInterfaceAddress>wlan0</NetworkInterfaceAddress>...

@@ -3,7 +3,7 @@
 gnome-terminal -x  $SHELL -ic "conda deactivate; v4l2-ctl -d /dev/video0 --set-parm=10; sleep 3; ros2 run v4l2_camera v4l2_camera_node --ros-args     -r image_raw:=/camera/image_raw     -r camera_info:=/camera/camera_info     -p camera_info_url:='file:///home/robot/.ros/camera_info/my_camera.yaml'     -p image_size:='[640,480]'     -p output_encoding:='mono8'  -p camera_frame_id:='camera_rgb_optical_frame'   -p qos_overrides./camera/image_raw.publisher.reliability:=reliable     -p qos_overrides./camera/camera_info.publisher.reliability:=reliable "
 gnome-terminal -x  $SHELL -ic "conda deactivate; ros2 launch fiducial_tb3_gazebo_demo sim_mapping_anchor.launch.py apriltag_cfg:=apriltag_20.yaml;bash"
 gnome-terminal -x  $SHELL -ic "conda deactivate; ros2 launch slam_toolbox online_async_launch.py "
-gnome-terminal -x  $SHELL -ic "conda deactivate; rviz2 "
+#gnome-terminal -x  $SHELL -ic "conda deactivate; rviz2 "
 gnome-terminal -x  $SHELL -ic "conda deactivate; cd ~/ros2_ws_nasa; ros2 launch nav2_bringup navigation_launch.py params_file:=apriltagnav2_params.yaml"
 gnome-terminal -x  $SHELL -ic "cd ~/ros2_ws_nasa; sleep 10; ros2 topic pub /usercmd std_msgs/msg/String '{'data': 'go'}' -t 5; bash"
 gnome-terminal -x  $SHELL -ic "cd ~/ros2_ws_nasa;  ros2 launch teleop_twist_joy teleop-launch.py joy_config:='xbox'"
