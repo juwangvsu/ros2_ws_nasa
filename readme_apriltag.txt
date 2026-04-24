@@ -14,3 +14,8 @@ apriltag_node tips:
 	image_raw frame_id must match with camera driver published image
 	tag size specified via a yaml file
 	publish /tf for tag's 3d pose if succeful, publish detectons. detection does not have 3d pose
+
+-------------------------caliberate------------
+ros2 run v4l2_camera v4l2_camera_node --ros-args   -r image_raw:=/camera/image_raw   -r camera_info:=/camera/camera_info   -p camera_frame_id:=camera_rgb_optical_frame
+ros2 run camera_calibration cameracalibrator   --size 7x5   --square 0.025 --ros-args --remap  image:=/camera/image_raw --remap camera:=/camera
+
