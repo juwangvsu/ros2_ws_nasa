@@ -19,3 +19,10 @@ apriltag_node tips:
 ros2 run v4l2_camera v4l2_camera_node --ros-args   -r image_raw:=/camera/image_raw   -r camera_info:=/camera/camera_info   -p camera_frame_id:=camera_rgb_optical_frame
 ros2 run camera_calibration cameracalibrator   --size 7x5   --square 0.025 --ros-args --remap  image:=/camera/image_raw --remap camera:=/camera
 
+
+tagsize:
+  large  21 cm
+  small 16 cma
+
+walli tag detected:
+  2.4 m
