@@ -10,7 +10,7 @@ def generate_launch_description():
             name='mdds30_serial_driver',
             output='screen',
             parameters=[{
-                'port': '/dev/ttyUSB0',
+                'port': '/dev/jackal',
                 'baudrate': 9600,
                 'max_percent': 60.0,
                 'wheel_base': 0.40,

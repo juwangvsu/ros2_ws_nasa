@@ -49,12 +49,12 @@ try:
         # move arm; direction 1 extends and direction 0 retracts
         b1 = build_actuator_byte(channel=0, direction=0, speed=30)
         
-        # move bucket; direction _ extends and direction _ retracts
-        b2 = build_actuator_byte(channel=1, direction=0, speed=30)
+        # move bucket; direction 0 extends and direction 1 retracts
+        b2 = build_actuator_byte(channel=1, direction=0, speed=0)
 
         send_command(b1, b2)
 
-        time.sleep(2)
+        time.sleep(12)
 
         # Stop both (brake)
         stoparm = build_actuator_byte(0, 0, 0)

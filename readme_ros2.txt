@@ -18,6 +18,11 @@ sudo apt install ros-humble-turtlebot3-gazebo
 python3 -m pip install --user rosbags
 sudo apt install ros-humble-rosbag2-storage-default-plugins
 
+----4/22/26 /dev/jackal /dev/bucket  -----
+
+start_nasa_full2.sh
+  to be regress to _full.sh
+
 ----4/22/26 webcam apriltag real test -----
 
 start_apriltagreal.sh
