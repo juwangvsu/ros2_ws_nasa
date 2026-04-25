@@ -30,3 +30,4 @@ slam_toolbox:
 
     do_loop_closing: false
     enable_interactive_mode: false
+    minimum_range: 0.3  # Set slightly higher than the 0.2m hardware limit

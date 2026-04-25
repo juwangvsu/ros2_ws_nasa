@@ -132,8 +132,11 @@ class ActuatorControlNode(Node):
             self.send_command(self.command)
 
     def on_timer(self):
+        #print("get on_timer")
         if self.mode == 'keyboard':
             key = self.keyboard.read_key()
+
+            print("get on_timer", key)
             if key is not None:
                 self.handle_key(key)
 
@@ -145,6 +148,7 @@ class ActuatorControlNode(Node):
         # Direction convention follows the uploaded ESP test script:
         # direction 1 extends, direction 0 retracts.
         if key == 'i':
+            self.get_logger().info(f" get key {key}")
             self.command = ActuatorCommand(FORWARD, s, FORWARD, s)
         elif key == 'k':
             self.command = ActuatorCommand(REVERSE, s, REVERSE, s)

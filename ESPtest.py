@@ -2,7 +2,7 @@ import serial
 import time
 
 # Change this to your actual port (check with: ls /dev/tty* or Device Manager)
-PORT = '/dev/ttyUSB0'   # Linux
+PORT = '/dev/ttyUSB1'   # Linux
 # PORT = 'COM3'         # Windows
 
 BAUD = 9600
@@ -47,10 +47,10 @@ try:
 #    lift_up_dump()
     while True:
         # move arm; direction 1 extends and direction 0 retracts
-        b1 = build_actuator_byte(channel=0, direction=1, speed=30)
+        b1 = build_actuator_byte(channel=0, direction=0, speed=30)
         
         # move bucket; direction _ extends and direction _ retracts
-        b2 = build_actuator_byte(channel=1, direction=1, speed=30)
+        b2 = build_actuator_byte(channel=1, direction=0, speed=30)
 
         send_command(b1, b2)
 
