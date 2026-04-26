@@ -18,7 +18,23 @@ sudo apt install ros-humble-turtlebot3-gazebo
 python3 -m pip install --user rosbags
 sudo apt install ros-humble-rosbag2-storage-default-plugins
 
-----4/22/26 /dev/jackal /dev/bucket  -----
+----4/25/26 tilted lidar  -----
+unilidar_l2.yaml
+	blind = 1.0 clear many close range points
+
+pointcloud_to_scan assume the robot and lidar are at level ground. 
+it do a simple filtering and pick some points to publish as scan,
+it did not transform the cloud to world frame.
+
+issue: there will be some phantom points which should not be used as obstacle. but 15 degree tilt should be ok
+
+slam can still use the lidar scan as it is suppose to be range scan in lidar sensor frame.
+
+so maybe xform points in pointcloud_to_scan?
+	pointlio_bridge static tf should include the static_pitch override
+	no need to change slam toolbox?
+
+----4/25/26 /dev/jackal /dev/bucket  -----
 
 start_nasa_full2.sh
   to be regress to _full.sh

@@ -15,7 +15,7 @@
             lidar_type: 5
             scan_line: 1
             timestamp_unit: 2           # the unit of time/t field in the PointCloud2 rostopic: 0-second, 1-milisecond, 2-microsecond, 3-nanosecond.
-            blind: 0.1
+            blind: 1.0
 
         mapping:
             imu_en: true
