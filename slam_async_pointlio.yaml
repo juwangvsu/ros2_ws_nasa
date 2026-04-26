@@ -4,8 +4,8 @@ slam_toolbox:
 
     odom_frame: odom
     map_frame: map
-    base_frame: baal/base
-    scan_topic: /scan
+    base_frame: base_link 
+    scan_topic: /scan_filtered
     mode: mapping
 
     debug_logging: true
@@ -30,4 +30,4 @@ slam_toolbox:
 
     do_loop_closing: false
     enable_interactive_mode: false
-    minimum_range: 0.3  # Set slightly higher than the 0.2m hardware limit
+    min_laser_range: 1.0 #this is not actually exposed in this version of slam toolbox

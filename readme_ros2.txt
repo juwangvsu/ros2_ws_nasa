@@ -18,6 +18,21 @@ sudo apt install ros-humble-turtlebot3-gazebo
 python3 -m pip install --user rosbags
 sudo apt install ros-humble-rosbag2-storage-default-plugins
 
+------4/26/26 scan_filtered -----
+
+changed:
+	start_bagrun_uni.sh ok on bag11 file, map clean
+	start_nasa_full2.sh to be test
+	nav2_pointlio.yaml
+	slam_async_pointlio.yaml
+	
+ update on slam toolbox and nav2 yaml
+ add a node to filter scan to scan_filtered
+ scan_filter.yaml min and max range
+
+fallback:
+	git checkout 0d02a431509af43cb3379c639f5c6e9730e40b49
+
 ----4/25/26 tilted lidar  -----
 unilidar_l2.yaml
 	blind = 1.0 clear many close range points
