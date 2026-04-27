@@ -13,8 +13,16 @@ find_package(std_msgs REQUIRED)
 add_executable(pointcloud_to_laserscan_logged_node
   src/pointcloud_to_laserscan_logged_node.cpp
 )
+add_executable(pointcloud_to_laserscan_logged_node_rock
+  src/pointcloud_to_laserscan_rock_hole_node.cpp
+)
 
 ament_target_dependencies(pointcloud_to_laserscan_logged_node
+  rclcpp
+  sensor_msgs
+  std_msgs
+)
+ament_target_dependencies(pointcloud_to_laserscan_logged_node_rock
   rclcpp
   sensor_msgs
   std_msgs
@@ -22,6 +30,10 @@ ament_target_dependencies(pointcloud_to_laserscan_logged_node
 
 install(TARGETS
   pointcloud_to_laserscan_logged_node
+  DESTINATION lib/${PROJECT_NAME}
+)
+install(TARGETS
+  pointcloud_to_laserscan_logged_node_rock
   DESTINATION lib/${PROJECT_NAME}
 )
 

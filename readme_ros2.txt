@@ -30,8 +30,16 @@ changed:
  add a node to filter scan to scan_filtered
  scan_filter.yaml min and max range
 
+lidar orientation:
+	lidar xyz: x is the opposite of the cable outlet. not to confuse with the mounting holes.
+	it might be mounted backward now, as base_link shows 30 deg up wrt baal/imu_initial.
+	
+
 fallback:
 	git checkout 0d02a431509af43cb3379c639f5c6e9730e40b49
+
+pointcloud_to_scan:
+	to be modified to include rock and hole in scan 
 
 ----4/25/26 tilted lidar  -----
 unilidar_l2.yaml
