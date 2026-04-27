@@ -18,6 +18,16 @@ sudo apt install ros-humble-turtlebot3-gazebo
 python3 -m pip install --user rosbags
 sudo apt install ros-humble-rosbag2-storage-default-plugins
 
+------4/27/26 panda2 rviz display on panda6 -----
+
+panda6, then ssh -X panda2wifi
+  ./start_bagrun_uni.sh ~/bag7_egr True
+    two rviz window show on panda6
+    if panda2 directly, rviz shown on current laptop
+
+slam toolbox on panda2 seems ok with bag play data
+to test ./start_nasa_full.sh to recheck slam crash problem
+
 ------4/26/26 scan_filtered -----
 
 changed:

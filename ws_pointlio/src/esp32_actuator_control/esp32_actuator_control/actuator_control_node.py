@@ -149,9 +149,9 @@ class ActuatorControlNode(Node):
         # direction 1 extends, direction 0 retracts.
         if key == 'i':
             self.get_logger().info(f" get key {key}")
-            self.command = ActuatorCommand(FORWARD, s, FORWARD, s)
+            self.command = ActuatorCommand(FORWARD, s, REVERSE, s)
         elif key == 'k':
-            self.command = ActuatorCommand(REVERSE, s, REVERSE, s)
+            self.command = ActuatorCommand(REVERSE, s, FORWARD, s)
         elif key == 'j':
             self.command = ActuatorCommand(REVERSE, 0, REVERSE, s)  # bucket up only
         elif key == 'u':
@@ -180,8 +180,8 @@ class ActuatorControlNode(Node):
     def on_joy(self, msg: Joy):
         # Default mapping for common Xbox controllers through joy_node:
         # axes[1] = left stick vertical, axes[4] = right stick vertical.
-        arm_axis = msg.axes[1] if len(msg.axes) > 1 else 0.0
-        bucket_axis = msg.axes[4] if len(msg.axes) > 4 else 0.0
+        arm_axis = msg.axes[4] if len(msg.axes) > 4 else 0.0
+        bucket_axis = msg.axes[3] if len(msg.axes) > 3 else 0.0
 
         arm_dir, arm_speed = self.axis_to_dir_speed(arm_axis)
         bucket_dir, bucket_speed = self.axis_to_dir_speed(bucket_axis)
