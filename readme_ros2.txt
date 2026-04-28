@@ -32,7 +32,9 @@ to test ./start_nasa_full.sh to recheck slam crash problem
 
 changed:
 	start_bagrun_uni.sh ok on bag11 file, map clean
-	start_nasa_full2.sh to be test
+	start_nasa_full2.sh to be test seems better,
+    see full2_diff.txt
+
 	nav2_pointlio.yaml
 	slam_async_pointlio.yaml
 	
