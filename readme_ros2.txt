@@ -18,6 +18,11 @@ sudo apt install ros-humble-turtlebot3-gazebo
 python3 -m pip install --user rosbags
 sudo apt install ros-humble-rosbag2-storage-default-plugins
 
+------4/30/26 point_lio hacking ... -----
+to deal with 15 deg + rotation issue
+last commit:
+	f107d4ec82eb88cac11f40259a1184cfdfa18e01
+
 ------4/27/26 panda2 rviz display on panda6 -----
 
 panda6, then ssh -X panda2wifi
