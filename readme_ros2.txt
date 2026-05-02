@@ -18,6 +18,17 @@ sudo apt install ros-humble-turtlebot3-gazebo
 python3 -m pip install --user rosbags
 sudo apt install ros-humble-rosbag2-storage-default-plugins
 
+----5/1/26 fix some tf issue and nav2 spin in bagrun ------
+start_bagrun_uni.sh
+	use_sim_time for static tf nodes 
+	nav2 stack tf error is fixed.
+
+nav2_pointlio.yaml
+	remove start spin beh
+	local_costmap frame set to /map
+
+now start_bagrun_uni.sh show local_plan and plan after give a goal
+
 ------4/30/26 point_lio hacking ... -----
 to deal with 15 deg + rotation issue
 last commit:
