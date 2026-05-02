@@ -22,6 +22,7 @@ setup(
         'console_scripts': [
             'mdds30_node = mdds30_serial_driver.mdds30_node:main',
             'mdds30_test_50pct = mdds30_serial_driver.test_50pct_node:main',
+            'key_drive = mdds30_serial_driver.key_drive.key_drive:main',
         ],
     },
 )
