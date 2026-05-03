@@ -18,6 +18,6 @@ gnome-terminal -x  $SHELL -ic "ros2 run laser_filters scan_to_scan_filter_chain 
 gnome-terminal -x  $SHELL -ic "cd ~/ros2_ws_nasa; ros2 launch pointlio_tf_bridge pointlio_tf_bridge_uni.launch.py static_pitch:=0.26 rate:=10.0; bash" #default rate 50, low to 10 help something?
 
 gnome-terminal -x  $SHELL -ic "cd ~/ros2_ws_nasa; ros2 launch slam_toolbox online_async_launch.py   slam_params_file:=slam_async_pointlio.yaml; bash"
-gnome-terminal -x  $SHELL -ic "ros2 launch nav2_bringup navigation_launch.py   params_file:=nav2_pointlio.yaml;bash"
+#gnome-terminal -x  $SHELL -ic "ros2 launch nav2_bringup navigation_launch.py   params_file:=nav2_pointlio.yaml;bash"
 #gnome-terminal -x  $SHELL -ic " ros2 launch mdds30_serial_driver mdds30.launch.py; bash" 
 

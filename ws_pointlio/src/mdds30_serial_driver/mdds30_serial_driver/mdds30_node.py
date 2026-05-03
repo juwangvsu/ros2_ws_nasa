@@ -53,9 +53,9 @@ class MDDS30Node(Node):
     def __init__(self) -> None:
         super().__init__('mdds30_serial_driver')
 
-        self.declare_parameter('port', '/dev/ttyUSB0')
+        self.declare_parameter('port', '/dev/jackal')
         self.declare_parameter('baudrate', 9600)
-        self.declare_parameter('max_percent', 30.0)
+        self.declare_parameter('max_percent', 70.0)
         self.declare_parameter('wheel_base', 0.40)
         self.declare_parameter('watchdog_sec', 0.5)
         self.declare_parameter('invert_left', False)
@@ -85,22 +85,40 @@ class MDDS30Node(Node):
         linear = float(msg.linear.x)
         angular = float(msg.angular.z)
 
-        left = linear - (angular * self._wheel_base / 2.0)
-        right = linear + (angular * self._wheel_base / 2.0)
+        if abs(linear) < 0.05:
+            linear = 0.0
+        if abs (angular) < 0.05:
+            angular = 0.0
 
-        max_mag = max(abs(left), abs(right), 1.0)
-        left_norm = left / max_mag
-        right_norm = right / max_mag
+        if linear == 0.0 and angular != 0.0:
+            if angular > 0:
+                left = 0.0
+                right = self._max_percent
+            else:
+                left = self._max_percent
+                right = 0.0
 
-        left_pct = left_norm * self._max_percent
-        right_pct = right_norm * self._max_percent
+        elif angular == 0.0:
+            left = linear * self._max_percent
+            right = linear * self._max_percent
+
+        else:
+            if angular > 0:
+                left = linear * self._max_percent * (1 - abs(angular))
+                right = linear * self._max_percent
+            else:
+                left = linear * self._max_percent
+                right = linear * self._max_percent * (1 - abs(angular))
+
+        left = max(-100.0, min(100.0, left))
+        right = max(-100.0, min(100.0, right))
 
         if self._invert_left:
-            left_pct = -left_pct
+            left = -left
         if self._invert_right:
-            right_pct = -right_pct
+            right = -right
 
-        return left_pct, right_pct
+        return left, right
 
     def _send(self, left_pct: float, right_pct: float) -> None:
         left_pct = max(-100.0, min(100.0, left_pct))

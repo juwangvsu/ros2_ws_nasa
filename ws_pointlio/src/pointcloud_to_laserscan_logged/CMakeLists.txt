@@ -9,6 +9,12 @@ find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(sensor_msgs REQUIRED)
 find_package(std_msgs REQUIRED)
+find_package(PCL REQUIRED)
+find_package(pcl_conversions REQUIRED)
+find_package(pcl_ros REQUIRED)
+
+include_directories(${PCL_INCLUDE_DIRS})
+include_directories(include ${pcl_conversions_INCLUDE_DIRS})
 
 add_executable(pointcloud_to_laserscan_logged_node
   src/pointcloud_to_laserscan_logged_node.cpp
@@ -21,6 +27,7 @@ ament_target_dependencies(pointcloud_to_laserscan_logged_node
   rclcpp
   sensor_msgs
   std_msgs
+  pcl_conversions
 )
 ament_target_dependencies(pointcloud_to_laserscan_logged_node_rock
   rclcpp

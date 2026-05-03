@@ -8,6 +8,10 @@
 #include "sensor_msgs/msg/laser_scan.hpp"
 #include "sensor_msgs/msg/point_cloud2.hpp"
 #include "sensor_msgs/point_cloud2_iterator.hpp"
+#include <pcl/point_cloud.h>
+#include <pcl/point_types.h>
+#include <pcl_conversions/pcl_conversions.h>
+#include <pcl/common/common.h>
 
 class PointCloudToLaserScanLoggedNode : public rclcpp::Node
 {
@@ -75,11 +79,11 @@ public:
   }
 
 private:
-  void cloudCallback(const sensor_msgs::msg::PointCloud2::SharedPtr cloud_msg)
+  void cloudCallback(const sensor_msgs::msg::PointCloud2::SharedPtr msg)
   {
     auto scan_msg = std::make_unique<sensor_msgs::msg::LaserScan>();
 
-    scan_msg->header = cloud_msg->header;
+    scan_msg->header = msg->header;
     scan_msg->angle_min = static_cast<float>(angle_min_);
     scan_msg->angle_max = static_cast<float>(angle_max_);
     scan_msg->angle_increment = static_cast<float>(angle_increment_);
@@ -108,14 +112,14 @@ private:
     size_t hole_points = 0;
     size_t converted_points = 0;
 
-    sensor_msgs::PointCloud2ConstIterator<float> iter_x(*cloud_msg, "x");
-    sensor_msgs::PointCloud2ConstIterator<float> iter_y(*cloud_msg, "y");
-    sensor_msgs::PointCloud2ConstIterator<float> iter_z(*cloud_msg, "z");
+    sensor_msgs::PointCloud2ConstIterator<float> iter_x(*msg, "x");
+    sensor_msgs::PointCloud2ConstIterator<float> iter_y(*msg, "y");
+    sensor_msgs::PointCloud2ConstIterator<float> iter_z(*msg, "z");
 
     pcl::PointCloud<pcl::PointXYZ>::Ptr scan_points(
 		    new pcl::PointCloud<pcl::PointXYZ>());
 
-    scan_points->header = pcl_conversions::toPCL(input->header);
+    scan_points->header = pcl_conversions::toPCL(msg->header);
 
     for (; iter_x != iter_x.end(); ++iter_x, ++iter_y, ++iter_z) {
       bool use_point = false;
@@ -213,7 +217,7 @@ private:
     pub_->publish(std::move(scan_msg));
     sensor_msgs::msg::PointCloud2 output_cloud;
     pcl::toROSMsg(*scan_points, output_cloud);
-    output_cloud.header = input->header;
+    output_cloud.header = msg->header;
     filtered_cloud_pub_->publish(output_cloud);
   }
 
