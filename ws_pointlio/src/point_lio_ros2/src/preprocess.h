@@ -154,6 +154,9 @@ public:
     float time_unit_scale;
     int lidar_type, point_filter_num, N_SCANS, SCAN_RATE, time_unit;
     double blind;
+    double max_dist;
+    double max_height;
+    double min_height;
     bool given_offset_time;
     //ros::Publisher pub_full, pub_surf, pub_corn;
 

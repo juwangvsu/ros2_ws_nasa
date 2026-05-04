@@ -1,5 +1,22 @@
 sudo apt install ros-${ROS_DISTRO}-camera-calibration
 
+
+---------5/3/26 ./start_apriltaggazebo.sh ------
+turtlebot3_waffle:
+	modified camera facing back
+turtlebot3_world.launch.py
+	robot init pose (1,3) facing y-axis
+./turtlebot3_gazebo/urdf/turtlebot3_waffle.urdf
+	camera_joint modify
+
+fiducial_tb3_gazebo_demo:
+	publish static tf from base_footprint-> ...> camera_rgb_frame
+gazebo launch:
+	also publish base_footprint->... camera_rgb_frame, from urdf file.
+	this seems overrule static tf from fiducial launch file. 
+	the duplicate is ok but need to be consistent.
+
+apriltag detection tf need to publish tf w.r.t camera link, not base_footprint
 --------------------------
 debug real:
 

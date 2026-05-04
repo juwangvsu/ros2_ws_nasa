@@ -76,6 +76,9 @@ void readParameters(shared_ptr<rclcpp::Node> &nh) {
     nh->declare_parameter<double>("mapping.imu_meas_acc_cov", 0.1);
     nh->declare_parameter<double>("mapping.imu_meas_omg_cov", 0.1);
     nh->declare_parameter<double>("preprocess.blind", 1.0);
+    nh->declare_parameter<double>("preprocess.max_dist", 5.0);
+    nh->declare_parameter<double>("preprocess.max_height", 4.0);
+    nh->declare_parameter<double>("preprocess.min_height", 0.3);
     nh->declare_parameter<int>("preprocess.lidar_type", 1);
     nh->declare_parameter<int>("preprocess.scan_line", 16);
     nh->declare_parameter<int>("preprocess.scan_rate", 10);
@@ -136,6 +139,9 @@ void readParameters(shared_ptr<rclcpp::Node> &nh) {
     nh->get_parameter("mapping.imu_meas_acc_cov", imu_meas_acc_cov);
     nh->get_parameter("mapping.imu_meas_omg_cov", imu_meas_omg_cov);
     nh->get_parameter("preprocess.blind", p_pre->blind);
+    nh->get_parameter("preprocess.max_dist", p_pre->max_dist);
+    nh->get_parameter("preprocess.max_height", p_pre->max_height);
+    nh->get_parameter("preprocess.min_height", p_pre->min_height);
     nh->get_parameter("preprocess.lidar_type", lidar_type);
     nh->get_parameter("preprocess.scan_line", p_pre->N_SCANS);
     nh->get_parameter("preprocess.scan_rate", p_pre->SCAN_RATE);

@@ -23,6 +23,9 @@ Preprocess::Preprocess()
     smallp_intersect = 172.5;
     smallp_ratio = 1.2;
     given_offset_time = false;
+    max_dist = 4.0;
+    max_height = 3.0;
+    min_height = 0.3;
 
     jump_up_limit = cos(jump_up_limit / 180 * M_PI);
     jump_down_limit = cos(jump_down_limit / 180 * M_PI);
@@ -269,7 +272,7 @@ void Preprocess::unilidar_handler(const sensor_msgs::msg::PointCloud2::SharedPtr
 
     pl_surf.reserve(plsize);
 
-    // std::cout << "plsize = " << plsize << ", given_offset_time = " << given_offset_time << std::endl;
+    std::cout << "plsize = " << plsize << ", given_offset_time = " << given_offset_time << std::endl;
     int countElimnated = 0;
     for (int i = 0; i < plsize; i++)
     {
@@ -286,8 +289,9 @@ void Preprocess::unilidar_handler(const sensor_msgs::msg::PointCloud2::SharedPtr
       added_pt.intensity = pl_orig.points[i].intensity;
 
       added_pt.curvature = pl_orig.points[i].time * time_unit_scale; 
-
-      if (added_pt.x * added_pt.x + added_pt.y * added_pt.y + added_pt.z * added_pt.z > (blind * blind) && added_pt.z < 2.0 && added_pt.z > 0.2)
+      double pt_dist;
+      pt_dist = added_pt.x * added_pt.x + added_pt.y * added_pt.y + added_pt.z * added_pt.z;
+      if (pt_dist > (blind * blind) && pt_dist < max_dist*max_dist && added_pt.z < max_height && added_pt.z > min_height)
       {
         pl_surf.points.push_back(added_pt);
       }
@@ -297,7 +301,7 @@ void Preprocess::unilidar_handler(const sensor_msgs::msg::PointCloud2::SharedPtr
       }
     }
 
-    // std::cout << "pl_surf.size() = " << pl_surf.size() << ", countElimnated = " << countElimnated << std::endl;
+    std::cout << "max dist, height min height " << max_dist<<" " <<max_height<<" "<<min_height<<" pl_surf.size() = " << pl_surf.size() << ", countElimnated = " << countElimnated << std::endl;
     
 }
 

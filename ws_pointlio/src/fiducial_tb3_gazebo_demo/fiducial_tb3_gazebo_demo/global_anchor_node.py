@@ -117,22 +117,31 @@ class GlobalAnchorNode(Node):
         if estimate is None:
             self.get_logger().warn('Could not solve anchor from visible tags')
             return
-        gcx, gcy, gyaw = estimate
+        gcx, gcy, global_camera_yaw = estimate
+        gyaw = global_camera_yaw
+        base_to_camera_yaw = yaw_from_quat(base_to_camera.transform.rotation)
+
+        global_base_yaw = wrap_to_pi(global_camera_yaw - base_to_camera_yaw)
+
+        self.get_logger().info(f'estimate camera in global_camera_yaw {global_camera_yaw}  global_base_yaw {global_base_yaw} base_to_camera_yaw {base_to_camera_yaw} estimate {estimate}', throttle_duration_sec=2.0)
 
         bcx = base_to_camera.transform.translation.x
         bcy = base_to_camera.transform.translation.y
-        gx = gcx - (math.cos(gyaw) * bcx - math.sin(gyaw) * bcy)
-        gy = gcy - (math.sin(gyaw) * bcx + math.cos(gyaw) * bcy)
+        gx = gcx - (
+            math.cos(global_base_yaw) * bcx - math.sin(global_base_yaw) * bcy)
+
+        gy = gcy - (
+            math.sin(global_base_yaw) * bcx + math.cos(global_base_yaw) * bcy)
 
         mx = map_to_base.transform.translation.x
         my = map_to_base.transform.translation.y
-        myaw = yaw_from_quat(map_to_base.transform.rotation)
+        mbyaw = yaw_from_quat(map_to_base.transform.rotation)
 
-        c = math.cos(gyaw - myaw)
-        s = math.sin(gyaw - myaw)
+        c = math.cos( global_base_yaw- mbyaw)
+        s = math.sin(global_base_yaw - mbyaw)
         gmx = gx - (c * mx - s * my)
         gmy = gy - (s * mx + c * my)
-        gmyaw = wrap_to_pi(gyaw - myaw)
+        gmyaw = wrap_to_pi(global_base_yaw - mbyaw)
 
         tf = TransformStamped()
         tf.header.stamp = self.get_clock().now().to_msg()
@@ -194,6 +203,7 @@ class GlobalAnchorNode(Node):
             return None
         gyaw = math.atan2(sum(math.sin(a) for a in pair_yaws), sum(math.cos(a) for a in pair_yaws))
 
+        self.get_logger().info(f'visible {visible} self.tag_global_xy {self.tag_global_xy}', throttle_duration_sec=2.0)
         # With gyaw fixed, each tag gives a base position estimate.
         cos_y = math.cos(gyaw)
         sin_y = math.sin(gyaw)
@@ -204,6 +214,7 @@ class GlobalAnchorNode(Node):
             bx = gx_tag - (cos_y * cx - sin_y * cy)
             by = gy_tag - (sin_y * cx + cos_y * cy)
             base_estimates.append((bx, by))
+        self.get_logger().info(f'base_estimates {base_estimates}', throttle_duration_sec=2.0)
         gx = sum(p[0] for p in base_estimates) / len(base_estimates)
         gy = sum(p[1] for p in base_estimates) / len(base_estimates)
         return gx, gy, gyaw

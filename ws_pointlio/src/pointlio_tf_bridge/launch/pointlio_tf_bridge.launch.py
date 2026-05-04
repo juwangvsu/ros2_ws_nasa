@@ -2,9 +2,17 @@ from launch import LaunchDescription
 from launch.actions import DeclareLaunchArgument
 from launch.substitutions import LaunchConfiguration
 from launch_ros.actions import Node
-
+import os
+from ament_index_python.packages import get_package_share_directory
 
 def generate_launch_description():
+    default_config = os.path.join(get_package_share_directory("pointlio_tf_bridge"),'config', 'bridge.yaml')
+    declare_slam_params_file_cmd = DeclareLaunchArgument(
+        'bridge_params_file',
+        default_value=default_config,
+        description='Full path to the ROS2 parameters file to use for the tfbridge node')
+    bridge_params_file = LaunchConfiguration('bridge_params_file')
+
     use_sim_time = LaunchConfiguration("use_sim_time")
     source_parent = LaunchConfiguration("source_parent")
     source_child = LaunchConfiguration("source_child")
@@ -25,13 +33,16 @@ def generate_launch_description():
 
     static_parent2 = LaunchConfiguration("static_parent2")
     static_child2 = LaunchConfiguration("static_child2")
+    print(f"bridge_params_file, {bridge_params_file}")
 
     bridge = Node(
         package="pointlio_tf_bridge",
         executable="republish_pointlio_tf_as_odom",
         name="pointlio_tf_republisher",
         output="screen",
-        parameters=[{
+        parameters=[
+            bridge_params_file,
+            {
             "use_sim_time": use_sim_time,
             "source_parent": source_parent,
             "source_child": source_child,
@@ -40,6 +51,8 @@ def generate_launch_description():
             "publish_odom": publish_odom,
             "rate": rate,
             "tf_timeout": tf_timeout,
+            "base_to_lidar_xyz": [0.0, 0.0, 0.1],
+            #"base_to_lidar_rpy": [0.0, 0.0, 2.0],
         }],
     )
 
@@ -99,6 +112,7 @@ def generate_launch_description():
 
         DeclareLaunchArgument("static_parent2", default_value="unilidar_lidar"),
         DeclareLaunchArgument("static_child2", default_value="base_link"),
+        declare_slam_params_file_cmd,
 
         bridge,
         static_tf,

@@ -8,6 +8,72 @@ from geometry_msgs.msg import TransformStamped
 from nav_msgs.msg import Odometry
 import tf2_ros
 
+def quat_conjugate(q):
+    x, y, z, w = q
+    return (-x, -y, -z, w)
+
+'''
+def quat_multiply(q1, q2):
+    x1, y1, z1, w1 = q1
+    x2, y2, z2, w2 = q2
+    return quat_normalize(
+        w1*x2 + x1*w2 + y1*z2 - z1*y2,
+        w1*y2 - x1*z2 + y1*w2 + z1*x2,
+        w1*z2 + x1*y2 - y1*x2 + z1*w2,
+        w1*w2 - x1*x2 - y1*y2 - z1*z2,
+    )
+
+
+def rotate_vec(q, v):
+    qv = (v[0], v[1], v[2], 0.0)
+    qr = quat_multiply(quat_multiply(q, qv), quat_conjugate(q))
+    return qr[0], qr[1], qr[2]
+'''
+
+def quat_multiply(q1, q2):
+    return quat_normalize(*quat_multiply_raw(q1, q2))
+
+def quat_multiply_raw(q1, q2):
+    x1, y1, z1, w1 = q1
+    x2, y2, z2, w2 = q2
+    return (
+        w1*x2 + x1*w2 + y1*z2 - z1*y2,
+        w1*y2 - x1*z2 + y1*w2 + z1*x2,
+        w1*z2 + x1*y2 - y1*x2 + z1*w2,
+        w1*w2 - x1*x2 - y1*y2 - z1*z2,
+    )
+
+
+def rotate_vec(q, v):
+    q = quat_normalize(*q)
+    qv = (v[0], v[1], v[2], 0.0)
+    qr = quat_multiply_raw(
+        quat_multiply_raw(q, qv),
+        quat_conjugate(q),
+    )
+    return qr[0], qr[1], qr[2]
+
+
+
+def invert_transform(t, q, logger):
+    qi = quat_conjugate(q)
+
+    logger.info(f"qi {qi} t {(-t[0], -t[1], -t[2])}")
+    rt = rotate_vec(qi, (-t[0], -t[1], -t[2]))
+    logger.info(f"rt {rt}")
+    return rt, qi
+
+
+def compose_transform(t1, q1, t2, q2):
+    rt2 = rotate_vec(q1, t2)
+    t = (
+        t1[0] + rt2[0],
+        t1[1] + rt2[1],
+        t1[2] + rt2[2],
+    )
+    q = quat_multiply(q1, q2)
+    return t, q
+
 
 def quat_normalize(x, y, z, w):
     n = math.sqrt(x * x + y * y + z * z + w * w)
@@ -15,6 +81,20 @@ def quat_normalize(x, y, z, w):
         return 0.0, 0.0, 0.0, 1.0
     return x / n, y / n, z / n, w / n
 
+def rpy_to_quat(roll, pitch, yaw):
+    cr = math.cos(roll * 0.5)
+    sr = math.sin(roll * 0.5)
+    cp = math.cos(pitch * 0.5)
+    sp = math.sin(pitch * 0.5)
+    cy = math.cos(yaw * 0.5)
+    sy = math.sin(yaw * 0.5)
+
+    return quat_normalize(
+        sr * cp * cy - cr * sp * sy,
+        cr * sp * cy + sr * cp * sy,
+        cr * cp * sy - sr * sp * cy,
+        cr * cp * cy + sr * sp * sy,
+    )
 
 class TFRepublisher(Node):
     def __init__(self):
@@ -27,7 +107,14 @@ class TFRepublisher(Node):
         self.declare_parameter("publish_odom", True)
         self.declare_parameter("rate", 50.0)
         self.declare_parameter("tf_timeout", 0.2)
+        self.declare_parameter("base_to_lidar_xyz", [0.0, 0.0, 0.0])
+        self.declare_parameter("base_to_lidar_rpy", [0.0, 0.0, math.pi])
 
+        self.base_to_lidar_xyz = list(self.get_parameter("base_to_lidar_xyz").get_parameter_value().double_array_value)
+        self.base_to_lidar_rpy = list(
+        self.get_parameter("base_to_lidar_rpy").get_parameter_value().double_array_value)
+
+        print(f"base_to_lidar_rpy {self.base_to_lidar_rpy}")
         self.source_parent = self.get_parameter("source_parent").get_parameter_value().string_value
         self.source_child = self.get_parameter("source_child").get_parameter_value().string_value
         self.target_parent = self.get_parameter("target_parent").get_parameter_value().string_value
@@ -54,6 +141,8 @@ class TFRepublisher(Node):
             f"publish_odom={self.publish_odom}, rate={self.rate_hz}Hz"
             f"repub timer period {period}"
         )
+        self.get_logger().info(f"base_to_lidar_rpy {self.base_to_lidar_rpy}")
+        self.get_logger().info(f"base_to_lidar_xyz {self.base_to_lidar_xyz}")
 
     def on_timer(self):
         try:
@@ -79,6 +168,53 @@ class TFRepublisher(Node):
         out.header.frame_id = self.target_parent
         out.child_frame_id = self.target_child
 
+        # T_odom_lidar = camera_init -> aft_mapped
+        t_odom_lidar = (
+            trans.transform.translation.x,
+            trans.transform.translation.y,
+            trans.transform.translation.z,
+        )
+
+        self.get_logger().info(
+            f"t_odom_lidar  {t_odom_lidar} "
+            )
+        q_odom_lidar = quat_normalize(
+            trans.transform.rotation.x,
+            trans.transform.rotation.y,
+            trans.transform.rotation.z,
+            trans.transform.rotation.w,
+        )
+
+        # T_base_lidar from parameter
+        t_base_lidar = tuple(self.base_to_lidar_xyz)
+        q_base_lidar = rpy_to_quat(*self.base_to_lidar_rpy)
+
+        # T_lidar_base = inverse(T_base_lidar)
+        t_lidar_base, q_lidar_base = invert_transform(t_base_lidar, q_base_lidar, self.get_logger())
+
+        self.get_logger().info(
+            f"t_base_lidar, {t_base_lidar} q_base_lidar {q_base_lidar}  self.base_to_lidar_xyz {self.base_to_lidar_xyz} t_lidar_base,  {t_lidar_base} q_lidar_base {q_lidar_base} "
+            )
+        # T_odom_base = T_odom_lidar * T_lidar_base
+        t_odom_base, q_odom_base = compose_transform(
+            t_odom_lidar,
+            q_odom_lidar,
+            t_lidar_base,
+            q_lidar_base,
+        )
+
+        self.get_logger().info(
+            f"t_odom_base  {t_odom_base} q_odom_base {q_odom_base} "
+            )
+        out.transform.translation.x = t_odom_base[0]
+        out.transform.translation.y = t_odom_base[1]
+        out.transform.translation.z = t_odom_base[2]
+
+        out.transform.rotation.x = q_odom_base[0]
+        out.transform.rotation.y = q_odom_base[1]
+        out.transform.rotation.z = q_odom_base[2]
+        out.transform.rotation.w = q_odom_base[3]
+        '''
         out.transform.translation.x = trans.transform.translation.x
         out.transform.translation.y = trans.transform.translation.y
         out.transform.translation.z = trans.transform.translation.z
@@ -93,7 +229,7 @@ class TFRepublisher(Node):
         out.transform.rotation.y = qy
         out.transform.rotation.z = qz
         out.transform.rotation.w = qw
-
+        '''
         self.tf_broadcaster.sendTransform(out)
 
         if self.publish_odom and self.odom_pub is not None:

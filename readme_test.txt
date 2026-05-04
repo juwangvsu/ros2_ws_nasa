@@ -1,6 +1,8 @@
 4/28/26:
 hplap, bag:
 
+max_height: 2.2 for hallway 2.7 for 113 low section 3.2 for 113 high section
+
 ./start_bagrun_uni.sh /home/student/bag6_systimefalse True
 
 -bag6: wangrobot, lidar no obs, flot, static, hm20, pointlio odom stable
@@ -31,5 +33,13 @@ hplap, bag:
 z: 0.0738808810710907
 z: 0.0803276002407074
 z: 0.0761452242732048
+
+-bag18: rover, lidar in middle, flat, egr lab, low rotation, count-clockwise,  pointlio odom stable
+
+-bag19: rover, lidar in middle, flat, egr hall, linear forward backword,  pointlio odom incorrect, hallway confusion
+
+-bag20: rover, lidar in middle, 15 deg, egr hall, linear forward backword,  pointlio odom bad 
+
+-bag21: rover, lidar in middle, flat, egr hall, nav2 movement random, hard to tell  
 
 python3 plot_angvel.py

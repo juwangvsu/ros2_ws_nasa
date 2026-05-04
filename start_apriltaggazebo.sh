@@ -1,5 +1,8 @@
 #!/bin/bash
 #this script send a go message intended for the starting slam map building after the fudicial apriltag pose estimate is done
+
+# (1) fiducial node (2) gazebo (3) slam (4) rviz2 (5) nav2 (6) go (7) xbox tele
+
 gnome-terminal -x  $SHELL -ic "conda deactivate; export ROS_DOMAIN_ID=3; ros2 launch fiducial_tb3_gazebo_demo sim_mapping_anchor.launch.py use_sim_time:=true apriltag_cfg:=apriltag_30.yaml; bash"
 gnome-terminal -x  $SHELL -ic "conda deactivate; export ROS_DOMAIN_ID=3; ros2 launch turtlebot3_world.launch.py use_sim_time:=true"
 gnome-terminal -x  $SHELL -ic "conda deactivate; export ROS_DOMAIN_ID=3; ros2 launch slam_toolbox online_async_launch.py use_sim_time:=True"
@@ -7,8 +10,6 @@ gnome-terminal -x  $SHELL -ic "conda deactivate; export ROS_DOMAIN_ID=3; rviz2 -
 gnome-terminal -x  $SHELL -ic "conda deactivate; export ROS_DOMAIN_ID=3; cd ~/ros2_ws_nasa; ros2 launch nav2_bringup navigation_launch.py use_sim_time:=true params_file:=apriltagnav2_params.yaml"
 gnome-terminal -x  $SHELL -ic "cd ~/ros2_ws_nasa; export ROS_DOMAIN_ID=3; sleep 10; ros2 topic pub /usercmd std_msgs/msg/String '{'data': 'go'}' -t 5; bash"
 gnome-terminal -x  $SHELL -ic "cd ~/ros2_ws_nasa;  export ROS_DOMAIN_ID=3; ros2 launch teleop_twist_joy teleop-launch.py joy_config:='xbox'"
-
-#gnome-terminal -x  $SHELL -ic "ctt nav2; ros2 launch nav2_bringup navigation_launch.py params_file:=nav2_pointlio.yaml use_sim_time:=true ;bash"
 
 
 # issue and fix: static tf also need use_sim_time:=true, otherwise base_link tf error, 

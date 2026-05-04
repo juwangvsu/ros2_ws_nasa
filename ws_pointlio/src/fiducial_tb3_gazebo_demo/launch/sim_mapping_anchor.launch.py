@@ -88,7 +88,7 @@ def generate_launch_description():
             package='tf2_ros',
             executable='static_transform_publisher',
             name='base_to_camera_tf',
-            arguments=['0.069', '-0.047', '0.107', '0', '0', '0', 'base_footprint', 'camera_rgb_frame'],
+            arguments=['0.069', '-0.047', '0.107', '0', '0', '3.14', 'base_footprint', 'camera_rgb_frame'],
             parameters=[{'use_sim_time': LaunchConfiguration('use_sim_time')}]
         ),
         Node(

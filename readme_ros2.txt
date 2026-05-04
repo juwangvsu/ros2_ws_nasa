@@ -18,6 +18,47 @@ sudo apt install ros-humble-turtlebot3-gazebo
 python3 -m pip install --user rosbags
 sudo apt install ros-humble-rosbag2-storage-default-plugins
 
+-------5/4/26 testing steps------------------------------------
+
+all:
+	start_nasa_full2.sh
+	start_nasa_motornbucket.sh
+	start_apriltagreal.sh
+	python3 mission_node.py
+
+	start_nasa_teleop.sh (laptop)
+	start_go.sh
+	
+-------5/2/26 scan etc yaml finetune ------------------
+
+cloud->scan:
+	pointcloud_to_laserscan_unitree_logged.yaml
+	 generate /scan range_min: 1.0 max_height: 2.0
+
+scan-> scan_filtered
+	scan_filter.yaml
+	max_height=2 if too high ceiling points in scan. /scan -> /scan_filtered
+
+point_lio:
+	ws_pointlio/src/point_lio_ros2/config/unilidar_l2.yaml
+	blind 1.0 
+	max_dist 3
+	max_height 2.5
+	min_height 0.25 
+	?add max height? currently hard coded preprocess.cpp remove z>2.0 might useful to use ceiling for features.
+
+nav2:
+	nav2_pointlio.yaml
+	behavior remove spin
+
+
+point lio currently initial pose x not aligned to robot front.
+	the actual lidar is facing back of robot, with a small angle. the small
+	angle is due to the lidar's x axis is at an angle w.r.t the mounting holes.
+
+	point lio assume lidar front is aligned to robot x-axis? how to set it up
+	so pointlio's assumed orientation align with the robot actual front?
+
 ----5/1/26 fix some tf issue and nav2 spin in bagrun ------
 start_bagrun_uni.sh
 	use_sim_time for static tf nodes 

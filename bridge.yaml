@@ -1,0 +1,4 @@
+pointlio_tf_republisher:
+  ros__parameters:
+    base_to_lidar_rpy: [0.0, 0.0, -2.53] #2.09 120 deg 2.35 135deg 2.53 145 deg 2.70 155 deg 2.96 170 deg
+    ppp: 0.5
