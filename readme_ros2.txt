@@ -348,6 +348,12 @@ slam_toolbox:
     odom -> frame_id (laserscan /scan)
     odom -> base_frame (see param file)
 
+fiducial:
+	static (launch file):
+	base_link'-> 'base_scan'
+	base_footprint', 'base_link
+	'base_footprint', 'camera_rgb_frame'
+	'camera_rgb_frame', 'camera_rgb_optical_frame'
 ----------3/12/26/ point_lio unitree lidar  --------------------
 
 lidar driver don't use system time
