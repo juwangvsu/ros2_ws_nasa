@@ -84,7 +84,7 @@ class ActuatorControlNode(Node):
             self.create_subscription(Joy, self.joy_topic, self.on_joy, 10)
             self.get_logger().info(
                 f'Joystick mode: listening to {self.joy_topic}. '
-                'Left stick vertical controls arm, right stick vertical controls bucket. '
+                'Right stick vertical controls arm, right stick horizontal controls bucket. '
                 'Positive axis extends, negative axis retracts.'
             )
 

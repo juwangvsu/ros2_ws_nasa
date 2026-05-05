@@ -28,7 +28,8 @@ all:
 
 	start_nasa_teleop.sh (laptop)
 	start_go.sh
-	
+
+nav2 goal cmd_vel too weak, x=0.26	
 -------5/2/26 scan etc yaml finetune ------------------
 
 cloud->scan:

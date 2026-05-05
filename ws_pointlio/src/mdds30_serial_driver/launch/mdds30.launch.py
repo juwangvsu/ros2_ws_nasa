@@ -12,7 +12,7 @@ def generate_launch_description():
             parameters=[{
                 'port': '/dev/jackal',
                 'baudrate': 9600,
-                'max_percent': 70.0,
+                'max_percent': 30.0,
                 'wheel_base': 0.40,
                 'watchdog_sec': 0.5,
                 'invert_left': False,

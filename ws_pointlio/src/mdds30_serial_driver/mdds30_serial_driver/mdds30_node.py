@@ -55,7 +55,7 @@ class MDDS30Node(Node):
 
         self.declare_parameter('port', '/dev/jackal')
         self.declare_parameter('baudrate', 9600)
-        self.declare_parameter('max_percent', 70.0)
+        self.declare_parameter('max_percent', 0.0)
         self.declare_parameter('wheel_base', 0.40)
         self.declare_parameter('watchdog_sec', 0.5)
         self.declare_parameter('invert_left', False)

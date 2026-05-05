@@ -38,17 +38,22 @@ class ActuatorTest(Node):
         # ---- low and DIG ----
         self.get_logger().info("DIG")
         self.publish_joy(-1.0, -1.0)
-        time.sleep(20)
+        time.sleep(33)
 
-        # ---- SCOOP UP ----
-        self.get_logger().info("SCOOP UP")
-        self.publish_joy(1.0, 1.0)
-        time.sleep(20)
+        # ---- BUCKET UP ----
+        self.get_logger().info("BUCKET UP")
+        self.publish_joy(1.0, 0.0)
+        time.sleep(5)
+
+        # ---- ARM UP ----
+        self.get_logger().info("ARM UP")
+        self.publish_joy(0.0, 1.0)
+        time.sleep(23)
 
         # ---- LOWER ----
         self.get_logger().info("LOWER")
         self.publish_joy(0.0, -1.0)
-        time.sleep(10)
+        time.sleep(15)
 
         # ---- DUMP ----
         self.get_logger().info("DUMP")

@@ -92,18 +92,23 @@ class MissionNode(Node):
         self.wait_until_reached(1.0, 4.0)
 
         # ---- DIG ----
-        self.get_logger().info("Digging...")
-        self.publish_joy(1.0, 1.0)
-        time.sleep(10)
+        self.get_logger().info("Priming...")
+        self.publish_joy(-1.0, -1.0)
+        time.sleep(33)
 
         # ---- MOVE FORWARD ----
         self.get_logger().info("Moving forward...")
         self.move_forward(2.0)
 
-        # ---- SCOOP UP ----
+        # ---- BUCKET UP ----
         self.get_logger().info("Scooping...")
-        self.publish_joy(1.0, -1.0)
+        self.publish_joy(1.0, 0.0)
         time.sleep(5)
+
+        # ---- ARM UP ----
+        self.get_logger().info("Lifting...")
+        self.publish_joy(0.0, 1.0)
+        time.sleep(23)
 
         # ---- GO TO SECOND GOAL ----
         self.send_goal(5.0, 4.0)
@@ -111,12 +116,12 @@ class MissionNode(Node):
 
         # ---- LOWER ----
         self.get_logger().info("Lowering...")
-        self.publish_joy(-1.0, 0.0)
-        time.sleep(5)
+        self.publish_joy(0.0, -1.0)
+        time.sleep(15)
 
         # ---- DUMP ----
         self.get_logger().info("Dumping...")
-        self.publish_joy(0.0, 1.0)
+        self.publish_joy(-1.0, 0.0)
 
         self.get_logger().info("Mission complete.")
 

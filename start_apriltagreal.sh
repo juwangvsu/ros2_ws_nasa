@@ -9,7 +9,7 @@ gnome-terminal -x  $SHELL -ic "conda deactivate; ros2 launch fiducial_tb3_gazebo
 #gnome-terminal -x  $SHELL -ic "conda deactivate; ros2 launch slam_toolbox online_async_launch.py "
 #gnome-terminal -x  $SHELL -ic "conda deactivate; cd ~/ros2_ws_nasa; ros2 launch nav2_bringup navigation_launch.py params_file:=apriltagnav2_params.yaml"
 gnome-terminal -x  $SHELL -ic "cd ~/ros2_ws_nasa; sleep 10; ros2 topic pub /usercmd std_msgs/msg/String '{'data': 'go'}' -t 5; bash"
-gnome-terminal -x  $SHELL -ic "cd ~/ros2_ws_nasa;  ros2 launch teleop_twist_joy teleop-launch.py joy_config:='xbox'"
+#gnome-terminal -x  $SHELL -ic "cd ~/ros2_ws_nasa;  ros2 launch teleop_twist_joy teleop-launch.py joy_config:='xbox'"
 
 
 # issue and fix: static tf also need use_sim_time:=true, otherwise base_link tf error, 
