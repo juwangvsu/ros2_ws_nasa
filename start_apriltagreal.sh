@@ -3,7 +3,7 @@
 
 # ./start_apriltagreal.sh True
 #			  true to also run rviz, slam, nav2
-# (1) v4l2 (2)  fiducial (3) slam (4) nav2 (5) go (6) xbox tele
+# (1) v4l2 (2)  fiducial (3) slam (4) nav2 (5) go (6) xbox tele (7) realsense (8) pointcloud_to_laserscan_logged_node_depthcloud
 # (3) (4) should be commented off, since start_nasa_full2.sh get these
 
 echo " ./start_apriltagreal.sh True|False true to run slam and nav2"
@@ -17,6 +17,13 @@ if [ "$3" = "True" ]; then
 else
 	echo "run slam and nav bag is not true"
 fi
+
+#start realsense node and tf and cloud_to_scan2
+gnome-terminal -x  $SHELL -ic "ros2 run tf2_ros static_transform_publisher --x 0 --y 0 --z 0 --yaw 0 --pitch 0 --roll 3.14 --frame-id base_link --child-frame-id camera_link ; bash"
+gnome-terminal -x  $SHELL -ic "ros2 launch realsense2_camera rs_launch.py pointcloud.enable:=true device_type:=d455 align_depth.enable:=true"
+gnome-terminal -x  $SHELL -ic "cd ~/ros2_ws_nasa; ros2 run pointcloud_to_laserscan_logged pointcloud_to_laserscan_logged_node_depthcloud  --ros-args   --params-file pointcloud_to_laserscan_camcloud.yaml   -r cloud_in:=/camera/camera/depth/color/pointsa   -r scan:=/scan2"
+
+
 gnome-terminal -x  $SHELL -ic "cd ~/ros2_ws_nasa; sleep 10; ros2 topic pub /usercmd std_msgs/msg/String '{'data': 'go'}' -t 5; bash"
 #gnome-terminal -x  $SHELL -ic "cd ~/ros2_ws_nasa;  ros2 launch teleop_twist_joy teleop-launch.py joy_config:='xbox'"
 

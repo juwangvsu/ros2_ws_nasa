@@ -366,15 +366,15 @@
       </inertial>
 
       <pose>0.069 -0.047 0.207 0 0 3.14</pose>
-      <sensor name="camera" type="camera">
+      <sensor name="camera" type="depth">
         <always_on>true</always_on>
         <visualize>true</visualize>
         <update_rate>10</update_rate>
         <camera name="intel_realsense_r200">
           <horizontal_fov>1.02974</horizontal_fov>
           <image>
-            <width>1920</width>
-            <height>1080</height>
+            <width>960</width>
+            <height>720</height>
             <format>R8G8B8</format>
           </image>
           <clip>
@@ -397,7 +397,9 @@
               <!-- <remapping>camera_info:=camera_info_demo</remapping> -->
             </ros>
             <!-- camera_name>omit so it defaults to sensor name</camera_name-->
-    	    <frame_name>camera_rgb_optical_frame</frame_name>
+    <frame_name>camera_rgb_optical_frame</frame_name>
+    <min_depth>0.1</min_depth>
+      <max_depth>10.0</max_depth>
             <!-- <hack_baseline>0.07</hack_baseline> -->
           </plugin>
       </sensor>

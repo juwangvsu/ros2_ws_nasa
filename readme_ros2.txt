@@ -32,6 +32,9 @@ all:
 nav2 goal cmd_vel too weak, x=0.26	
 -------5/2/26 scan etc yaml finetune ------------------
 
+depthcloud->scan2:
+	realsense depthcloud, see readme_realsense.txt
+
 cloud->scan:
 	pointcloud_to_laserscan_unitree_logged.yaml
 	 generate /scan range_min: 1.0 max_height: 2.0
@@ -312,9 +315,16 @@ after this fix full stack seems to run well
 lidar_driver:
   commented off the tf publishing part,
 
-two static publish nodes in shell script
-  baal/imu_initial -> baal/imu -> baal/base
-  this is to chain up so tf cloud data can be resolved, frame_id of
+realsense node:
+	camera_link->...camera_depth_optical_frame
+		for depth pointcloud
+static publish nodes
+  start_apriltagreal.sh
+	base_link -> camera_link 
+		(for realsense camera in front upsidedown)
+  start_nasa_full2.sh 
+  	baal/imu_initial -> baal/imu -> baal/base
+  	this is to chain up so tf cloud data can be resolved, frame_id of
 	/unilidar/cloud is "/baal/base" for compatible with other lidar
 	might change in the future.
   use_system_time true is ok,

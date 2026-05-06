@@ -8,7 +8,13 @@
 #include "sensor_msgs/msg/laser_scan.hpp"
 #include "sensor_msgs/msg/point_cloud2.hpp"
 #include "sensor_msgs/point_cloud2_iterator.hpp"
-
+// 5/5/26 wang
+// assume incoming cloud is depth camera cloud, in frame camera_rgb_optical_frame
+// so y is height, y=0 is the camera level. since camera is about 20cm above ground, y pointing down, clip y by [ -0.2, 0] is the part from camera level to + 0.2m
+//  range is x^2+z^2, this requires camera/robot body is relative level.
+// alternative: convert to odom frame, clip using z-axis. this assume good odom estimation
+// scan should be published in camera_rgb_frame
+//
 class PointCloudToLaserScanLoggedNode : public rclcpp::Node
 {
 public:
@@ -17,6 +23,7 @@ public:
   {
     input_topic_ = this->declare_parameter<std::string>("input_topic", "/cloud_in");
     output_topic_ = this->declare_parameter<std::string>("output_topic", "/scan");
+    target_frame_ = this->declare_parameter<std::string>("target_frame", "camera_rgb_frame");
 
     min_height_ = this->declare_parameter<double>("min_height", -0.2);
     max_height_ = this->declare_parameter<double>("max_height", 0.2);
@@ -42,6 +49,7 @@ public:
 
     RCLCPP_INFO(this->get_logger(), "angle_inc to: %f", angle_increment_);
     RCLCPP_INFO(this->get_logger(), "Subscribed to: %s", input_topic_.c_str());
+    RCLCPP_INFO(this->get_logger(), "target_frame to: %s", target_frame_.c_str());
     RCLCPP_INFO(this->get_logger(), "Publishing scan to: %s", output_topic_.c_str());
   }
 
@@ -51,6 +59,7 @@ private:
     auto scan_msg = std::make_unique<sensor_msgs::msg::LaserScan>();
 
     scan_msg->header = cloud_msg->header;
+    scan_msg->header.frame_id = target_frame_;
     scan_msg->angle_min = static_cast<float>(angle_min_);
     scan_msg->angle_max = static_cast<float>(angle_max_);
     scan_msg->angle_increment = static_cast<float>(angle_increment_);
@@ -92,18 +101,18 @@ private:
         continue;
       }
 
-      if (z < min_height_ || z > max_height_) {
+      if (y < min_height_ || y > max_height_) {
         ++zbad_points;
         continue;
       }
 
-      const double range = std::hypot(x, y);
+      const double range = std::hypot(x, z);
       if (range < range_min_ || range > range_max_) {
         ++rangebad_points;
         continue;
       }
 
-      const double angle = std::atan2(y, x);
+      const double angle = std::atan2(-x,z);
       if (angle < angle_min_ || angle > angle_max_) {
         ++anglebad_points;
         continue;
@@ -116,14 +125,10 @@ private:
       }
 
       ++converted_points;
-      RCLCPP_INFO(
-        this->get_logger(),
-        "range=%f", range);
+      //RCLCPP_INFO(this->get_logger(),"range=%f", range);
 
       if (range < scan_msg->ranges[static_cast<size_t>(index)]) {
-      	RCLCPP_INFO(
-        this->get_logger(),
-        "range=%f scan_msg->range=%f", range, scan_msg->ranges[static_cast<size_t>(index)]);
+      	//RCLCPP_INFO(this->get_logger(),"range=%f scan_msg->range=%f", range, scan_msg->ranges[static_cast<size_t>(index)]);
 
         scan_msg->ranges[static_cast<size_t>(index)] = static_cast<float>(range);
       }
@@ -166,6 +171,7 @@ private:
 
   std::string input_topic_;
   std::string output_topic_;
+  std::string target_frame_;
 
   double min_height_;
   double max_height_;

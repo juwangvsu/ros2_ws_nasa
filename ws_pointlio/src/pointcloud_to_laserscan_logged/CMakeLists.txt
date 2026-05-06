@@ -19,11 +19,20 @@ include_directories(include ${pcl_conversions_INCLUDE_DIRS})
 add_executable(pointcloud_to_laserscan_logged_node
   src/pointcloud_to_laserscan_logged_node.cpp
 )
+add_executable(pointcloud_to_laserscan_logged_node_depthcloud
+  src/pointcloud_to_laserscan_logged_node_depthcloud.cpp
+)
 add_executable(pointcloud_to_laserscan_logged_node_rock
   src/pointcloud_to_laserscan_rock_hole_node.cpp
 )
 
 ament_target_dependencies(pointcloud_to_laserscan_logged_node
+  rclcpp
+  sensor_msgs
+  std_msgs
+  pcl_conversions
+)
+ament_target_dependencies(pointcloud_to_laserscan_logged_node_depthcloud
   rclcpp
   sensor_msgs
   std_msgs
@@ -37,6 +46,10 @@ ament_target_dependencies(pointcloud_to_laserscan_logged_node_rock
 
 install(TARGETS
   pointcloud_to_laserscan_logged_node
+  DESTINATION lib/${PROJECT_NAME}
+)
+install(TARGETS
+  pointcloud_to_laserscan_logged_node_depthcloud
   DESTINATION lib/${PROJECT_NAME}
 )
 install(TARGETS

@@ -16,3 +16,24 @@ launch camera:
 launch with point cloud:
 	ros2 launch realsense2_camera rs_launch.py pointcloud.enable:=true device_type:=d455 align_depth.enable:=true
 
+topic:
+	/camera/camera/depth/color/pointsa
+	frameid
+camera_depth_optical_frame
+
+----------------depth cloud to scan---------------------------
+pointcloud_to_laserscan_logged_node_depthcloud
+	cloud-> /scan2
+		cloud assume in camera_rgb_optical_frame
+		scan publish in camera_rgb_frame
+		add to slam? or just costmap?
+		skip entire frame if not level enough by lookup odom->base_link tf?
+		preprocess depthcloud remove floor points?
+		downsample needed if too heavy?
+		
+gazebo:
+	./start_apriltaggazebo.sh
+		gazebo camera type depth, resolution not too high
+real:
+	./start_apriltagreal.sh
+

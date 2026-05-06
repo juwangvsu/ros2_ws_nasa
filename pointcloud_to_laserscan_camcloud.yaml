@@ -1,0 +1,18 @@
+# convert depth cloud, height is y axis downward, so min_height -0.2 is actually 0.2 meter above depth cam level, max_height 0 is camera level
+pointcloud_to_laserscan_logged:
+  ros__parameters:
+    use_sim_time: true
+    target_frame: camera_rgb_frame
+    transform_tolerance: 0.1
+    min_height: -0.2
+    max_height: 0.0
+    angle_min: -3.14159
+    angle_max: 3.14159
+    angle_increment: 0.0047
+    range_min: 1.0
+    range_max: 8.0
+    queue_size: 10
+    scan_time: 0.1
+    use_inf: true
+    inf_epsilon: 1.0
+    output_qos: reliable
