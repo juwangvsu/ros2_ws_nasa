@@ -11,7 +11,7 @@ echo " ./start_apriltagreal.sh True|False true to run slam and nav2"
 gnome-terminal -x  $SHELL -ic "conda deactivate; v4l2-ctl -d /dev/video0 --set-parm=10; sleep 3; ros2 run v4l2_camera v4l2_camera_node --ros-args     -r image_raw:=/camera/image_raw     -r camera_info:=/camera/camera_info     -p camera_info_url:='file:///home/robot/.ros/camera_info/my_camera.yaml'     -p image_size:='[640,480]'     -p output_encoding:='mono8'  -p camera_frame_id:='camera_rgb_optical_frame'   -p qos_overrides./camera/image_raw.publisher.reliability:=reliable     -p qos_overrides./camera/camera_info.publisher.reliability:=reliable "
 gnome-terminal -x  $SHELL -ic "conda deactivate; ros2 launch fiducial_tb3_gazebo_demo sim_mapping_anchor.launch.py apriltag_cfg:=apriltag_20.yaml;bash"
 
-if [ "$3" = "True" ]; then
+if [ "$1" = "True" ]; then
 	gnome-terminal -x  $SHELL -ic "conda deactivate; ros2 launch slam_toolbox online_async_launch.py "
 	gnome-terminal -x  $SHELL -ic "conda deactivate; cd ~/ros2_ws_nasa; ros2 launch nav2_bringup navigation_launch.py params_file:=apriltagnav2_params.yaml"
 else
@@ -21,7 +21,7 @@ fi
 #start realsense node and tf and cloud_to_scan2
 gnome-terminal -x  $SHELL -ic "ros2 run tf2_ros static_transform_publisher --x 0 --y 0 --z 0 --yaw 0 --pitch 0 --roll 3.14 --frame-id base_link --child-frame-id camera_link ; bash"
 gnome-terminal -x  $SHELL -ic "ros2 launch realsense2_camera rs_launch.py pointcloud.enable:=true device_type:=d455 align_depth.enable:=true"
-gnome-terminal -x  $SHELL -ic "cd ~/ros2_ws_nasa; ros2 run pointcloud_to_laserscan_logged pointcloud_to_laserscan_logged_node_depthcloud  --ros-args   --params-file pointcloud_to_laserscan_camcloud.yaml   -r cloud_in:=/camera/camera/depth/color/pointsa   -r scan:=/scan2"
+gnome-terminal -x  $SHELL -ic "cd ~/ros2_ws_nasa; ros2 run pointcloud_to_laserscan_logged pointcloud_to_laserscan_logged_node_depthcloud  --ros-args   --params-file pointcloud_to_laserscan_camcloud.yaml -r __node:=pointcloud_to_laser_scan2 " 
 
 
 gnome-terminal -x  $SHELL -ic "cd ~/ros2_ws_nasa; sleep 10; ros2 topic pub /usercmd std_msgs/msg/String '{'data': 'go'}' -t 5; bash"

@@ -1,0 +1,2 @@
+ros2 bag record /camera/camera/aligned_depth_to_color/camera_info /camera/camera/color/camera_info /camera/camera/color/image_raw /camera/camera/color/image_raw/compressed  /camera/camera/color/image_raw/compressedDepth /camera/camera/color/image_raw/theora /camera/camera/color/metadata /camera/camera/depth/camera_info /camera/camera/depth/color/points /camera/image_raw /cloud_registered /clock /detections /image_raw/compressed /image_raw/compressedDepth /image_raw/theora /scan /scan2 /scan_filtered /unilidar/cloud /unilidar/imu /tf /tf_static
+

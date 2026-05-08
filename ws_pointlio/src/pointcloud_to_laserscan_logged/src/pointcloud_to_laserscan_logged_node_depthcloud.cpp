@@ -44,12 +44,13 @@ public:
 
     sub_ = this->create_subscription<sensor_msgs::msg::PointCloud2>(
       input_topic_,
-      rclcpp::SensorDataQoS(),
+      10, //rclcpp::SensorDataQoS(),
+      //rclcpp::SensorDataQoS(), this bad, fail to get msg
       std::bind(&PointCloudToLaserScanLoggedNode::cloudCallback, this, std::placeholders::_1));
 
     RCLCPP_INFO(this->get_logger(), "angle_inc to: %f", angle_increment_);
     RCLCPP_INFO(this->get_logger(), "Subscribed to: %s", input_topic_.c_str());
-    RCLCPP_INFO(this->get_logger(), "target_frame to: %s", target_frame_.c_str());
+    RCLCPP_INFO(this->get_logger(), "my target_frame to: %s", target_frame_.c_str());
     RCLCPP_INFO(this->get_logger(), "Publishing scan to: %s", output_topic_.c_str());
   }
 
@@ -57,6 +58,7 @@ private:
   void cloudCallback(const sensor_msgs::msg::PointCloud2::SharedPtr cloud_msg)
   {
     auto scan_msg = std::make_unique<sensor_msgs::msg::LaserScan>();
+    RCLCPP_INFO(this->get_logger(),"cloud callback");
 
     scan_msg->header = cloud_msg->header;
     scan_msg->header.frame_id = target_frame_;

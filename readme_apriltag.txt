@@ -1,5 +1,7 @@
 sudo apt install ros-${ROS_DISTRO}-camera-calibration
 
+---------5/6/26 ./start_apriltagreal.sh ------
+updated with depth cloud, see realsense section
 
 ---------5/6/26 ./start_apriltaggazebo.sh ------
 updated with depth cloud, see realsense section
@@ -77,6 +79,16 @@ topic:
   frameid    
 camera_depth_optical_frame    
  
+--------------5/8/26 start_apriltagreal.sh ---
+pointcloud_to_laserscan_logged_node_depthcloud:
+  for realsense (diff from gazebo)
+      input_topic: /camera/camera/depth/color/points
+      output_topic: /scan2
+
+  _sub don't use qos
+  now use param file for config
+  /scan2 data show up, need to verify about frame_id and data nature
+
 --------------5/7/26 realsense l515 hack -----------
 hpzlaptop:
 	same usb port may choose usb2 or usb3 depending on cable used.

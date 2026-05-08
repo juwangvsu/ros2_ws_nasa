@@ -18,6 +18,10 @@ sudo apt install ros-humble-turtlebot3-gazebo
 python3 -m pip install --user rosbags
 sudo apt install ros-humble-rosbag2-storage-default-plugins
 
+----- 5/8/26 bag record missing data if record all ----
+start_nasa_bagrecord3.sh
+  record main sensor data only work
+
 -------5/4,6/26 testing steps------------------------------------
 
 all:
@@ -39,7 +43,7 @@ nodes:
 	bucket.sh:
 		mdds, actuator drv
 
--------5/2/26 scan etc yaml finetune ------------------
+-------5/2,8/26 scan etc yaml finetune ------------------
 
 depthcloud->scan2:
 	realsense depthcloud, see readme_realsense.txt
