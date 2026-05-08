@@ -18,7 +18,7 @@ sudo apt install ros-humble-turtlebot3-gazebo
 python3 -m pip install --user rosbags
 sudo apt install ros-humble-rosbag2-storage-default-plugins
 
--------5/4/26 testing steps------------------------------------
+-------5/4,6/26 testing steps------------------------------------
 
 all:
 	start_nasa_full2.sh
@@ -30,6 +30,15 @@ all:
 	start_go.sh
 
 nav2 goal cmd_vel too weak, x=0.26	
+
+nodes:
+	full2.sh: 
+		unilidar drv, tf, tf, pointlio, pc2scan, scan_flt, pointlio_tfbrd, slam, nav2
+	apriltagreal.sh:
+		webcam, tf, realsense cam, depthpt->scan2, 
+	bucket.sh:
+		mdds, actuator drv
+
 -------5/2/26 scan etc yaml finetune ------------------
 
 depthcloud->scan2:

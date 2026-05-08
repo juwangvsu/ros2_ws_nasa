@@ -56,11 +56,12 @@ walli tag detected:
 # Register the Intel server    
 sudo mkdir -p /etc/apt/keyrings    
 curl -sSf https://librealsense.intel.com/Debian/librealsense.pgp | sudo tee /etc
-echo "deb [signed-by=/etc/apt/keyrings/librealsense.pgp] https://librealsense.in
+/apt/keyrings/librealsense.pgp > /dev/null
+echo "deb [signed-by=/etc/apt/keyrings/librealsense.pgp] https://librealsense.intel.com/Debian/apt-repo `lsb_release -cs` main" | sudo tee /etc/apt/local.sources.d/realsense.sources
     
 # Install the SDK    
-sudo apt update    
-sudo apt install librealsense2-dkms librealsense2-utils librealsense2-dev librea
+sudo apt update   
+sudo apt install librealsense2-dkms librealsense2-utils librealsense2-dev librealsense2-dbg 
     
 install:    
   sudo apt install ros-$ROS_DISTRO-realsense2-camera    
@@ -69,13 +70,49 @@ launch camera:
   ros2 launch realsense2_camera rs_launch.py    
     
 launch with point cloud:    
-  ros2 launch realsense2_camera rs_launch.py pointcloud.enable:=true device_type
+  ros2 launch realsense2_camera rs_launch.py pointcloud.enable:=true device_type:=d455 align_depth.enable:=true
     
 topic:    
   /camera/camera/depth/color/pointsa    
   frameid    
 camera_depth_optical_frame    
-    
+ 
+--------------5/7/26 realsense l515 hack -----------
+hpzlaptop:
+	same usb port may choose usb2 or usb3 depending on cable used.
+		both usb2 and usb3 is ok with rebuild sdk.	
+	l515 stock driver and ros package dont work
+	rebuild source both the sdk and ros package
+
+sudo apt remove ros-humble-realsense2-* ros-humble-librealsense2 
+sudo apt remove librealsense2 librealsense2-dev librealsense2-utils librealsense2-dkms librealsense2-udev-rules
+sudo apt autoremove
+
+/media/student/ttt/librealsense (sdk)
+	23b0904ba126e87327bc2908c1a5f79342eae867 commit
+	git checkout v2.53.1
+	mkdir build && cd build
+	cmake .. -DBUILD_EXAMPLES=true -DBUILD_GRAPHICAL_EXAMPLES=true -DFORCE_RSUSB_BACKEND=true
+	make -j$(nproc)
+	sudo make install
+
+	cd /media/student/ttt/librealsense
+	sudo ./scripts/setup_udev_rules.sh
+	sudo udevadm control --reload-rules
+	sudo udevadm trigger
+/media/student/ttt/ros2_ws2/src/realsense-ros
+	2a65533ee7431bdc05fe5744798efc7f5713f866 commit
+	colcon build \
+  --packages-select realsense2_camera realsense2_camera_msgs \
+  --cmake-clean-cache \
+  --cmake-args \
+    -DCMAKE_PREFIX_PATH=/usr/local \
+    -Drealsense2_DIR=/usr/local/lib/cmake/realsense2
+
+test:
+	LIBRS_FORCE_RSUSB_BACKEND=1 ros2 run realsense2_camera realsense2_camera_node --ros-args   -p enable_depth:=true   -p enable_color:=true   -p pointcloud.enable:=true   -p pointcloud.stream_filter:=2   -p pointcloud.stream_index_filter:=0   -p align_depth.enable:=true
+
+	    
 ----------------5/6/26 depth cloud to scan---------------------------    
 pointcloud_to_laserscan_logged_node_depthcloud    
   cloud-> /scan2    
