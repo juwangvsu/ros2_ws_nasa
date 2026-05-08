@@ -21,7 +21,7 @@ fi
 #start realsense node and tf and cloud_to_scan2
 gnome-terminal -x  $SHELL -ic "ros2 run tf2_ros static_transform_publisher --x 0 --y 0 --z 0 --yaw 0 --pitch 0 --roll 3.14 --frame-id base_link --child-frame-id camera_link ; bash"
 gnome-terminal -x  $SHELL -ic "ros2 launch realsense2_camera rs_launch.py pointcloud.enable:=true device_type:=d455 align_depth.enable:=true"
-gnome-terminal -x  $SHELL -ic "cd ~/ros2_ws_nasa; ros2 run pointcloud_to_laserscan_logged pointcloud_to_laserscan_logged_node_depthcloud  --ros-args   --params-file pointcloud_to_laserscan_camcloud.yaml -r __node:=pointcloud_to_laser_scan2 " 
+gnome-terminal -x  $SHELL -ic "cd ~/ros2_ws_nasa; ros2 run pointcloud_to_laserscan_logged pointcloud_to_laserscan_logged_node_depthcloud  --ros-args   --params-file pointcloud_to_laserscan_camcloud_realsense.yaml -r __node:=pointcloud_to_laser_scan2 " 
 
 
 gnome-terminal -x  $SHELL -ic "cd ~/ros2_ws_nasa; sleep 10; ros2 topic pub /usercmd std_msgs/msg/String '{'data': 'go'}' -t 5; bash"

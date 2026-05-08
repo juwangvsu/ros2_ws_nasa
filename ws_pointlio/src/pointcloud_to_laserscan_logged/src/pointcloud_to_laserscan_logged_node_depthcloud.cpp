@@ -114,7 +114,10 @@ private:
         continue;
       }
 
-      const double angle = std::atan2(-x,z);
+      double angle = std::atan2(x,z)+3.14; 
+      if (angle > 3.14)
+	      angle -= 6.28;
+
       if (angle < angle_min_ || angle > angle_max_) {
         ++anglebad_points;
         continue;

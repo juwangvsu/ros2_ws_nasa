@@ -1,5 +1,22 @@
 sudo apt install ros-${ROS_DISTRO}-camera-calibration
 
+---------5/8/26 realsense pointcloud to scan ----------------
+test:
+
+	ros2 run pointcloud_to_laserscan_logged pointcloud_to_laserscan_logged_node_depthcloud  --ros-args   --params-file pointcloud_to_laserscan_camcloud_realsense.yaml -r __node:=pointcloud_to_laser_scan2
+	ros2 bag play bag26/ --clock --topics /camera/camera/depth/color/points /tf /tf_static /camera/camera/color/image_raw
+
+rviz2: 
+	in base_link frame, the /camera/camera/depth/color/points and /scan2 should lineup
+
+note:
+	pointcloud_to_laserscan_camcloud_realsense.yaml
+	point cloud in optical_frame, published scan2 should be in rgb_frame
+	in cpp node, 180 deg yaw was added as a dirty hack, to count for the upside down layout of the realsense camera.
+
+	pointcloud_to_laserscan_camcloud_realsense.yaml
+	for gazebo tb3 sim, not regress test yet
+
 ---------5/6/26 ./start_apriltagreal.sh ------
 updated with depth cloud, see realsense section
 
