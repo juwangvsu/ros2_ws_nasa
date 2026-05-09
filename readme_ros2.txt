@@ -18,9 +18,20 @@ sudo apt install ros-humble-turtlebot3-gazebo
 python3 -m pip install --user rosbags
 sudo apt install ros-humble-rosbag2-storage-default-plugins
 
+
+
 ----- 5/8/26 bag record missing data if record all ----
 start_nasa_bagrecord3.sh
   record main sensor data only work
+
+-----5/8/26 fake laser, laser merge --------------------
+test:
+	ros2 bag play bag24_113_allsensors --clock
+	ros2 run ira_laser_tools laserscan_multi_merger   --ros-args  -r __node:=laserscan_multi_merger --params-file laser_merger.yaml
+	ros2 run fake_scan2_publisher fake_scan2_node 
+
+rviz2: check /scan3
+	/scan, /scan2->/scan3
 
 -------5/4,6/26 testing steps------------------------------------
 
