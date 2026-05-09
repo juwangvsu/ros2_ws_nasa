@@ -30,15 +30,26 @@ test:
 	ros2 run ira_laser_tools laserscan_multi_merger   --ros-args  -r __node:=laserscan_multi_merger --params-file laser_merger.yaml
 	ros2 run fake_scan2_publisher fake_scan2_node 
 
+test2:
+	./start_bagrun_uni_scan3.sh ~/bag18_egr113_360rotfast_flat True True
+		$2 rviz, $3 fakescan
+
 rviz2: check /scan3
 	/scan, /scan2->/scan3
 
--------5/4,6/26 testing steps------------------------------------
+note:
+	fake scan2 triggered by scan
+	scan_merge works fine without scan2
 
-all:
-	start_nasa_full2.sh
+-------5/4,6,8/26 testing steps------------------------------------
+
+5/8:
+	start_nasa_full3.sh True True
+		scan3 for slam/nav2, scan+scan2->scan3
+5/6:
+	start_nasa_full2.sh True
 	start_nasa_motornbucket.sh
-	start_apriltagreal.sh
+	start_apriltagreal.sh False
 	python3 mission_node.py
 
 	start_nasa_teleop.sh (laptop)
