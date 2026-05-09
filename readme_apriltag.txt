@@ -35,8 +35,11 @@ turtlebot3_world.launch.py
 ./turtlebot3_gazebo/urdf/turtlebot3_waffle.urdf
 	camera_joint modify
 
-
+tf:
 fiducial_tb3_gazebo_demo:
+	global_anchor_node.py 
+		publish global->map tf 
+		assume two tags observed, assume map->base->camera_rgb_frame tf
 	publish static tf from base_footprint-> ...> camera_rgb_frame
 gazebo launch:
 	also publish base_footprint->... camera_rgb_frame, from urdf file.
