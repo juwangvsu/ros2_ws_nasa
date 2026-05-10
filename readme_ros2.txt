@@ -44,7 +44,7 @@ rviz2: check /scan3
 note:
 	fake scan2 triggered by scan
 	scan_merge works fine without scan2
-
+    bug: if start with only /scan, the node will sub to one topic and works ok, then later if /scan2 show up, the merge node will still sub to one topic but hop to /scan2 instead
 -------5/4,6,8/26 testing steps------------------------------------
 
 5/8:
@@ -361,6 +361,8 @@ static publish nodes
   start_apriltagreal.sh
 	base_link -> camera_link 
 		(for realsense camera in front upsidedown)
+  base_link -> baal/imu_initial
+    (by pointlio_tf_bridge static node)
   start_nasa_full2.sh 
   	baal/imu_initial -> baal/imu -> baal/base
   	this is to chain up so tf cloud data can be resolved, frame_id of
