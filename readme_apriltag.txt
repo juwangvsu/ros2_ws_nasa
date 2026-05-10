@@ -20,6 +20,10 @@ note:
 ---------5/6/26 ./start_apriltagreal.sh ------
 updated with depth cloud, see realsense section
 
+-/dev/videox discovery for logitech webcam for apriltag part
+-v4l2_camera use $pwd/camera_info/my_camera.yaml (contain calib info needed for apriltag node)
+-apriltag node launched by fidu need calib info in camera_info topic
+
 ---------5/6/26 ./start_apriltaggazebo.sh ------
 updated with depth cloud, see realsense section
 

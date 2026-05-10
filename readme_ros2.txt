@@ -20,6 +20,10 @@ sudo apt install ros-humble-rosbag2-storage-default-plugins
 
 
 
+----- 5/9/26 bag27 all sensor ----
+
+scan2 seems good and aligned with realsense pc 
+
 ----- 5/8/26 bag record missing data if record all ----
 start_nasa_bagrecord3.sh
   record main sensor data only work

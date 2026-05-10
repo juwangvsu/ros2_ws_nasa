@@ -87,6 +87,16 @@ class MissionNode(Node):
         self.cmd_vel_pub.publish(Twist())
 
     def run_mission(self):
+        # ---- Wait for 10 secs ----
+        #time.sleep(10)
+
+        # ---- Drive forward slowly send /cmd_vel for 3 secs ----
+        
+        time.sleep(3)
+        
+        # Wait 20 secs for map building
+        #time.sleep(20)
+
         # ---- GO TO FIRST GOAL ----
         self.send_goal(1.0, 4.0)
         self.wait_until_reached(1.0, 4.0)

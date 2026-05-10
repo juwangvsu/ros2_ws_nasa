@@ -7,8 +7,19 @@
 # (3) (4) should be commented off, since start_nasa_full2.sh get these
 
 echo " ./start_apriltagreal.sh True|False true to run slam and nav2"
+LOGI_DEV=$(v4l2-ctl --list-devices | grep -A 1 "C920" | grep -o '/dev/video[0-9]\+' | head -n 1)
+if [ -z "$LOGI_DEV" ]; then
+    echo "Error: Logitech C920 not found."
+    exit 1
+fi
 
-gnome-terminal -x  $SHELL -ic "conda deactivate; v4l2-ctl -d /dev/video0 --set-parm=10; sleep 3; ros2 run v4l2_camera v4l2_camera_node --ros-args     -r image_raw:=/camera/image_raw     -r camera_info:=/camera/camera_info     -p camera_info_url:='file:///home/robot/.ros/camera_info/my_camera.yaml'     -p image_size:='[640,480]'     -p output_encoding:='mono8'  -p camera_frame_id:='camera_rgb_optical_frame'   -p qos_overrides./camera/image_raw.publisher.reliability:=reliable     -p qos_overrides./camera/camera_info.publisher.reliability:=reliable "
+echo "Found Logitech C920 at: $LOGI_DEV"
+# /dev/video0
+
+#v4l2-ctl -d "$LOGI_DEV" --list-ctrls
+
+gnome-terminal -x  $SHELL -ic "cd ~/ros2_ws_nasa; conda deactivate; v4l2-ctl -d $LOGI_DEV --set-parm=10; sleep 3; ros2 run v4l2_camera v4l2_camera_node --ros-args     -r image_raw:=/camera/image_raw     -r camera_info:=/camera/camera_info  -p video_device:=$LOGI_DEV   -p camera_info_url:='file://$(pwd)/camera_info/my_camera.yaml'     -p image_size:='[640,480]'     -p output_encoding:='mono8'  -p camera_frame_id:='camera_rgb_optical_frame'   -p qos_overrides./camera/image_raw.publisher.reliability:=reliable     -p qos_overrides./camera/camera_info.publisher.reliability:=reliable "
+
 gnome-terminal -x  $SHELL -ic "conda deactivate; ros2 launch fiducial_tb3_gazebo_demo sim_mapping_anchor.launch.py apriltag_cfg:=apriltag_20.yaml;bash"
 
 if [ "$1" = "True" ]; then
