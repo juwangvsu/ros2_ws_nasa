@@ -83,7 +83,7 @@ Visualization Manager:
         Filter size: 10
         History Policy: Keep Last
         Reliability Policy: Best Effort
-        Value: /scan3
+        Value: /scan_filtered
       Use Fixed Frame: true
       Use rainbow: true
       Value: true
@@ -271,20 +271,46 @@ Visualization Manager:
           Value: false
         baal/imu_initial:
           Value: true
+        base_footprint:
+          Value: true
         base_link:
           Value: true
+        base_scan:
+          Value: true
         camera_init:
+          Value: true
+        camera_link:
+          Value: true
+        camera_rgb_frame:
+          Value: true
+        camera_rgb_optical_frame:
+          Value: true
+        global:
           Value: true
         map:
           Value: false
         odom:
           Value: false
+        tag_0:
+          Value: true
+        tag_0_map:
+          Value: true
+        tag_1:
+          Value: true
+        tag_1_map:
+          Value: true
+        tag_2:
+          Value: true
+        tag_2_map:
+          Value: true
       Marker Scale: 1
       Name: TF
       Show Arrows: true
       Show Axes: true
       Show Names: false
       Tree:
+        global:
+          {}
         map:
           odom:
             base_link:
@@ -292,6 +318,19 @@ Visualization Manager:
                 baal/imu:
                   baal/base:
                     {}
+              base_footprint:
+                camera_rgb_frame:
+                  camera_rgb_optical_frame:
+                    tag_0_map:
+                      {}
+                    tag_1_map:
+                      {}
+                    tag_2_map:
+                      {}
+              base_scan:
+                {}
+              camera_link:
+                {}
       Update Interval: 0
       Value: true
   Enabled: true
@@ -340,7 +379,7 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz_default_plugins/Orbit
-      Distance: 12.302306175231934
+      Distance: 18.80442237854004
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1

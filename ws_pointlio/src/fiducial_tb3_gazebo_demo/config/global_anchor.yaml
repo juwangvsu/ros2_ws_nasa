@@ -4,6 +4,7 @@ global_anchor_node:
     map_frame: map
     base_frame: base_footprint
     camera_frame: camera_rgb_frame
+    tf_sync: true 
     required_tag_count: 2
     required_tag_ids: [0, 1, 2]
     tag_frames: ['tag_0', 'tag_1', 'tag_2']

@@ -7,7 +7,7 @@ from rclpy.duration import Duration
 from rclpy.node import Node
 from std_msgs.msg import String
 from tf2_ros import Buffer, TransformBroadcaster, TransformListener
-
+from sensor_msgs.msg import LaserScan
 
 def yaw_from_quat(q) -> float:
     siny_cosp = 2.0 * (q.w * q.z + q.x * q.y)
@@ -52,10 +52,21 @@ class GlobalAnchorNode(Node):
         tag_ids = list(self.get_parameter('required_tag_ids').value)
         tag_frames = list(self.get_parameter('tag_frames').value)
         flat = list(self.get_parameter('tag_positions_xy').value)
+
+
         self.tag_global_xy: Dict[str, Tuple[float, float]] = {}
         for i, frame in enumerate(tag_frames):
             self.tag_global_xy[frame] = (float(flat[2 * i]), float(flat[2 * i + 1]))
         self.required_frames = list(self.tag_global_xy.keys())
+
+        self.declare_parameter('tf_sync', True)
+        self.declare_parameter('sync_topic', '/scan')
+
+        self.tf_sync = self.get_parameter('tf_sync').value
+        self.sync_topic = self.get_parameter('sync_topic').value
+
+        # Store the latest scan timestamp
+        self.latest_scan_stamp = None
 
         self.tick_count=0
         self.go_received = False
@@ -70,7 +81,18 @@ class GlobalAnchorNode(Node):
         self.timer = self.create_timer(self.tick_interval, self.tick)
         self.repub_timer = self.create_timer(float(self.get_parameter('republish_period_sec').value), self.republish)
 
+        self.scan_sub = self.create_subscription(
+            LaserScan, # Using AnyMsg or LaserScan if you import it
+            self.sync_topic,
+            self.scan_callback,
+            10)
+
         self.get_logger().info('Waiting for at least two visible AprilTags and /usercmd == go')
+
+    def scan_callback(self, msg):
+        # We assume the message has a standard header
+        if hasattr(msg, 'header'):
+            self.latest_scan_stamp = msg.header.stamp
 
     def usercmd_cb(self, msg: String):
         if msg.data.strip().lower() == 'go':
@@ -144,7 +166,15 @@ class GlobalAnchorNode(Node):
         gmyaw = wrap_to_pi(global_base_yaw - mbyaw)
 
         tf = TransformStamped()
-        tf.header.stamp = self.get_clock().now().to_msg()
+
+        # Logic for timestamp synchronization
+        if self.tf_sync and self.latest_scan_stamp is not None:
+            tf.header.stamp = self.latest_scan_stamp
+        else:
+            tf.header.stamp = self.get_clock().now().to_msg()
+
+        #tf.header.stamp = self.get_clock().now().to_msg()
+
         tf.header.frame_id = self.global_frame
         tf.child_frame_id = self.map_frame
         tf.transform.translation.x = gmx
@@ -156,10 +186,10 @@ class GlobalAnchorNode(Node):
         tf.transform.rotation.z = q[2]
         tf.transform.rotation.w = q[3]
         self.anchor_tf = tf
-        self.anchor_locked = True
+        #self.anchor_locked = True
         self.tf_broadcaster.sendTransform(tf)
         self.get_logger().info(
-            f'Latched initial anchor {self.global_frame}->{self.map_frame}: '
+            f'Latched initial @time {tf.header.stamp} anchor {self.global_frame}->{self.map_frame}: '
             f'x={gmx:.3f}, y={gmy:.3f}, yaw={gmyaw:.3f} rad'
         )
 

@@ -183,6 +183,7 @@ void LaserscanMerger::laserscan_topic_parser()
 
   // make sure missing topics are published LaserScan topics
   for (auto const & token : tokens) {
+	  std::cout<<"token "<< token <<"\n";
     if (std::find(
         subscribed_topics.begin(), subscribed_topics.end(),
         token) == subscribed_topics.end())
@@ -193,6 +194,7 @@ void LaserscanMerger::laserscan_topic_parser()
       {
         tmp_input_topics.push_back(token);
       } else {
+        tmp_input_topics.push_back(token);
         RCLCPP_WARN(
           this->get_logger(),
           "Topic %s [sensor_msg/LaserScan] does not seem to be published yet. Could not subscribe.",
@@ -202,10 +204,10 @@ void LaserscanMerger::laserscan_topic_parser()
   }
 
   // clean up duplicate topics
-  std::sort(tmp_input_topics.begin(), tmp_input_topics.end());
-  std::vector<std::string>::iterator last =
-    std::unique(tmp_input_topics.begin(), tmp_input_topics.end());
-  tmp_input_topics.erase(last, tmp_input_topics.end());
+  //std::sort(tmp_input_topics.begin(), tmp_input_topics.end());
+  //std::vector<std::string>::iterator last =
+  //  std::unique(tmp_input_topics.begin(), tmp_input_topics.end());
+  //tmp_input_topics.erase(last, tmp_input_topics.end());
   input_topics = tmp_input_topics;
 
   // Create subscriptions

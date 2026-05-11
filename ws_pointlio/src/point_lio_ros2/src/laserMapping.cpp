@@ -642,7 +642,7 @@ void set_twist(T &out) {
 }
 
 void publish_odometry(const rclcpp::Publisher<nav_msgs::msg::Odometry>::SharedPtr &pubOdomAftMapped,
-                      std::shared_ptr<tf2_ros::TransformBroadcaster> &tf_br) {
+                      std::shared_ptr<tf2_ros::TransformBroadcaster> &tf_br, rclcpp::Node::SharedPtr node) {
 
     odomAftMapped.header.frame_id = odom_header_frame_id;
     odomAftMapped.child_frame_id = odom_child_frame_id;
@@ -693,8 +693,14 @@ void publish_odometry(const rclcpp::Publisher<nav_msgs::msg::Odometry>::SharedPt
     transform.transform.rotation.y = odomAftMapped.pose.pose.orientation.y;
     transform.transform.rotation.z = odomAftMapped.pose.pose.orientation.z;
 
-    transform.header.stamp = odomAftMapped.header.stamp;
-
+    //wang hack to publish tf at walltime
+    if (p_pre->tf_walltime) {
+	std::cout<<"using wall time true\n";
+    	transform.header.stamp = node->get_clock()->now();
+    }else{
+	std::cout<<"using wall time false\n";
+	transform.header.stamp = odomAftMapped.header.stamp;
+	}
     tf_br->sendTransform(transform);
 }
 
@@ -1105,7 +1111,7 @@ int main(int argc, char **argv) {
                     if (publish_odometry_without_downsample) {
                         /******* Publish odometry *******/
 
-                        publish_odometry(pubOdomAftMapped, tf_broadcaster);
+                        publish_odometry(pubOdomAftMapped, tf_broadcaster, nh->shared_from_this());
                         if (runtime_pos_log) {
                             state_out = kf_output.x_;
                             euler_cur = SO3ToEuler(state_out.rot);
@@ -1258,7 +1264,7 @@ int main(int argc, char **argv) {
                     if (publish_odometry_without_downsample) {
                         /******* Publish odometry *******/
 
-                        publish_odometry(pubOdomAftMapped, tf_broadcaster);
+                        publish_odometry(pubOdomAftMapped, tf_broadcaster,nh->shared_from_this());
                         if (runtime_pos_log) {
                             state_in = kf_input.x_;
                             euler_cur = SO3ToEuler(state_in.rot);
@@ -1284,7 +1290,7 @@ int main(int argc, char **argv) {
 
             /******* Publish odometry downsample *******/
             if (!publish_odometry_without_downsample) {
-                publish_odometry(pubOdomAftMapped, tf_broadcaster);
+                publish_odometry(pubOdomAftMapped, tf_broadcaster,nh->shared_from_this());
             }
 
             /*** add the feature points to map kdtree ***/

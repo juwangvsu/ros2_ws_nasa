@@ -61,6 +61,16 @@ ros2 run apriltag_ros apriltag_node --ros-args   -r image_rect:=/camera/image_ra
 	rviz2 tf should show tag_0 xyz position updating
 ros2 topic echo /detections 
 
+----------------apriltag debug with bag mini setup----------------
+/camera/image_raw /camera/camera_info
+
+(1)ros2 bag play ~/bag24_113_allsensors --clock -r 0.2 --topics /camera/image_raw /camera/camera_info
+(2) ros2 run apriltag_ros apriltag_node --ros-args   -r image_rect:=/camera/image_raw   -r camera_info:=/camera/camera_info -r use_sim_time:=True --params-file ~/ros2_ws_nasa/ws_pointlio/src/fiducial_tb3_gazebo_demo/config/apriltag.yaml
+
+(3) rviz2 set frame to camera_rgb_optical_frame
+
+should see tag in tf
+----------------------------------------------------------
 apriltag_node tips:
 	image_raw frame_id must match with camera driver published image
 	tag size specified via a yaml file

@@ -18,6 +18,30 @@ sudo apt install ros-humble-turtlebot3-gazebo
 python3 -m pip install --user rosbags
 sudo apt install ros-humble-rosbag2-storage-default-plugins
 
+----- 5/10/26 start_goal.sh -----
+	send goal in global frame not as reliable as map frame
+	need to address this at mission_node.py
+
+	apriltag fail if no /camera/camera_info, or out of sync with /camera/image_raw, 
+		tb fixed?
+
+----- 5/10/26 scan merge issue ----
+--/scan timestamp is unilidar time, need to be converted to system
+otherwise merge have an issue
+	fixed: keep lidar time, fix other tf stuff to lidar time. seems work
+
+--ira laser merge node fail if start with /scan then later /scan2 jump in. merge node switch to /scan2 instead.
+	fixed.
+
+-sudo apt install ros-humble-camera-info-manager-py
+
+apriltag pub tf camera_rgb_optical_frame to tag_0
+	won't show in map frame since its tf is walltime, not lidar time
+	add tf_repub2.py to repub this into lidar scan time, tag_0_map, don't repub to tag_0 to keep it simple, it is for visualize anyway
+	global->map tf currently no stamp, to change it to lidar time
+
+fixed:
+-pointcloud_2_laser_depthcam now listen to /scan, and use the last time stamp for /scan2
 
 
 ----- 5/9/26 bag27 all sensor ----

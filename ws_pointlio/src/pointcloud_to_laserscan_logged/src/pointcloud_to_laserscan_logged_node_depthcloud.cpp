@@ -22,7 +22,7 @@ public:
   : Node("pointcloud_to_laserscan_logged")
   {
     input_topic_ = this->declare_parameter<std::string>("input_topic", "/cloud_in");
-    output_topic_ = this->declare_parameter<std::string>("output_topic", "/scan");
+    output_topic_ = this->declare_parameter<std::string>("output_topic", "/scan22");
     target_frame_ = this->declare_parameter<std::string>("target_frame", "camera_rgb_frame");
 
     min_height_ = this->declare_parameter<double>("min_height", -0.2);
@@ -39,6 +39,12 @@ public:
     use_inf_ = this->declare_parameter<bool>("use_inf", true);
     inf_epsilon_ = this->declare_parameter<double>("inf_epsilon", 1.0);
     print_per_message_ = this->declare_parameter<bool>("print_per_message", true);
+	scan_input_topic_ = this->declare_parameter<std::string>("scan_input_topic", "/scan");
+
+	scan_sub_ = this->create_subscription<sensor_msgs::msg::LaserScan>(
+  scan_input_topic_,
+  10,
+  std::bind(&PointCloudToLaserScanLoggedNode::scanCallback, this, std::placeholders::_1));
 
     pub_ = this->create_publisher<sensor_msgs::msg::LaserScan>(output_topic_, 10);
 
@@ -55,6 +61,11 @@ public:
   }
 
 private:
+	void scanCallback(const sensor_msgs::msg::LaserScan::SharedPtr scan_msg)
+{
+  last_scan_stamp_ = scan_msg->header.stamp;
+  have_scan_stamp_ = true;
+}
   void cloudCallback(const sensor_msgs::msg::PointCloud2::SharedPtr cloud_msg)
   {
     auto scan_msg = std::make_unique<sensor_msgs::msg::LaserScan>();
@@ -62,6 +73,11 @@ private:
 
     scan_msg->header = cloud_msg->header;
     scan_msg->header.frame_id = target_frame_;
+	//wang hack
+    if (have_scan_stamp_) {
+  scan_msg->header.stamp = last_scan_stamp_;
+	}	
+
     scan_msg->angle_min = static_cast<float>(angle_min_);
     scan_msg->angle_max = static_cast<float>(angle_max_);
     scan_msg->angle_increment = static_cast<float>(angle_increment_);
@@ -189,6 +205,12 @@ private:
   bool use_inf_;
   double inf_epsilon_;
   bool print_per_message_;
+
+  //wang hack
+  	rclcpp::Subscription<sensor_msgs::msg::LaserScan>::SharedPtr scan_sub_;
+	std::string scan_input_topic_;
+	builtin_interfaces::msg::Time last_scan_stamp_;
+	bool have_scan_stamp_{false};
 };
 
 int main(int argc, char ** argv)

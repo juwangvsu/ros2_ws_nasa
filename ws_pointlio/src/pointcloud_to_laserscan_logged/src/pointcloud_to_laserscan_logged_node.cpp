@@ -30,6 +30,8 @@ public:
 
     scan_time_ = this->declare_parameter<double>("scan_time", 0.1);
     use_inf_ = this->declare_parameter<bool>("use_inf", true);
+    dbg_ = this->declare_parameter<bool>("dbg", true);
+    use_walltime_ = this->declare_parameter<bool>("use_walltime", true);
     inf_epsilon_ = this->declare_parameter<double>("inf_epsilon", 1.0);
     print_per_message_ = this->declare_parameter<bool>("print_per_message", true);
 
@@ -51,6 +53,25 @@ private:
     auto scan_msg = std::make_unique<sensor_msgs::msg::LaserScan>();
 
     scan_msg->header = cloud_msg->header;
+    std::cout << "--- LaserScan Header ---" << std::endl;
+std::cout << "Frame ID: " << scan_msg->header.frame_id << std::endl;
+std::cout << "Seconds:  " << scan_msg->header.stamp.sec << std::endl;
+std::cout << "Nanosecs: " << scan_msg->header.stamp.nanosec << std::endl;
+
+// nogood    std::cout << "scan_msg->header " << scan_msg->header << std::endl;
+    auto nowtm = this->get_clock()->now();
+    if (dbg_){
+
+	auto now = this->get_clock()->now();
+    	RCLCPP_INFO(this->get_logger(), "dbg lidar stamp: %d", scan_msg->header.stamp.sec);
+    	RCLCPP_INFO(this->get_logger(), "now sec: %f nanosec %ld", now.seconds(), now.nanoseconds());
+	//now = this->get_clock()->now();
+	std::cout << "Seconds: " << std::fixed << std::setprecision(10) << now.seconds() << std::endl;
+	std::cout << "Raw Nanoseconds: " << now.nanoseconds() << std::endl;
+    }
+    if (use_walltime_){
+	    scan_msg->header.stamp = this->get_clock()->now(); 
+    }
     scan_msg->angle_min = static_cast<float>(angle_min_);
     scan_msg->angle_max = static_cast<float>(angle_max_);
     scan_msg->angle_increment = static_cast<float>(angle_increment_);
@@ -116,14 +137,10 @@ private:
       }
 
       ++converted_points;
-      RCLCPP_INFO(
-        this->get_logger(),
-        "range=%f", range);
+      //RCLCPP_INFO(this->get_logger(),"range=%f", range);
 
       if (range < scan_msg->ranges[static_cast<size_t>(index)]) {
-      	RCLCPP_INFO(
-        this->get_logger(),
-        "range=%f scan_msg->range=%f", range, scan_msg->ranges[static_cast<size_t>(index)]);
+      	//RCLCPP_INFO(this->get_logger(),"range=%f scan_msg->range=%f", range, scan_msg->ranges[static_cast<size_t>(index)]);
 
         scan_msg->ranges[static_cast<size_t>(index)] = static_cast<float>(range);
       }
@@ -176,6 +193,8 @@ private:
   double range_max_;
   double scan_time_;
   bool use_inf_;
+  bool use_walltime_;
+  bool dbg_;
   double inf_epsilon_;
   bool print_per_message_;
 };

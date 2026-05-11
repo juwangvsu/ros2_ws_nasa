@@ -1,5 +1,6 @@
 /**:
     ros__parameters:
+        use_sim_time: false
         common:
             lid_topic: "/unilidar/cloud" 
             imu_topic: "/unilidar/imu" 
@@ -19,6 +20,7 @@
             max_dist: 6.0
             max_height: 2.6
             min_height: 0.15
+            tf_walltime: false
 
         mapping:
             imu_en: true

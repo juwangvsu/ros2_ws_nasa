@@ -154,6 +154,7 @@ public:
     float time_unit_scale;
     int lidar_type, point_filter_num, N_SCANS, SCAN_RATE, time_unit;
     double blind;
+    bool tf_walltime;
     double max_dist;
     double max_height;
     double min_height;

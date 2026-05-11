@@ -29,6 +29,7 @@ def generate_launch_description():
             'filter_size_map': 0.1,  # Options: 0.5, 0.3, 0.15, 0.1
             'cube_side_length': 1000.0,  # Option: 1000
             'runtime_pos_log_enable': False,  # Option: True
+            #'use_sim_time': True,
         }
     ]
 

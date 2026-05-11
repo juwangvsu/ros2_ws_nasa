@@ -28,7 +28,9 @@ else
 fi
 
 
-gnome-terminal -x  $SHELL -ic "cd ~/ros2_ws_nasa; ros2 launch pointlio_tf_bridge pointlio_tf_bridge_uni.launch.py static_pitch:=0.0 static_yaw:=3.14 rate:=10.0; bash" 
+#5/10/26 copied from start_bagrun_uni_scan3.sh, tb tested... launch file diff in loading param file or not
+gnome-terminal -x  $SHELL -ic "cd ~/ros2_ws_nasa; ros2 launch pointlio_tf_bridge pointlio_tf_bridge.launch.py use_sim_time:=true static_pitch:=0.0 static_yaw:=-2.53 bridge_params_file:=bridge.yaml; bash" # 15 deg 0.26, 20 deg 0.348 , 30 deg 0.52 base_link -> baal/imu_initial cmdline param overwriten by bridge.yaml base_link to baal/imu_initial to correct the tf from point_lio
+#gnome-terminal -x  $SHELL -ic "cd ~/ros2_ws_nasa; ros2 launch pointlio_tf_bridge pointlio_tf_bridge_uni.launch.py static_pitch:=0.0 static_yaw:=3.14 rate:=10.0; bash" 
 #default rate 50, low to 10 help something? base_link -> baal/imu_initial lidar face robot back so 3.14 yaw, if flat pitch is 0
 
 gnome-terminal -x  $SHELL -ic "cd ~/ros2_ws_nasa; ros2 launch slam_toolbox online_async_launch.py   slam_params_file:=slam_async_pointlio.yaml; bash"

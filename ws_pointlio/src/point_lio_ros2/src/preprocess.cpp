@@ -26,6 +26,7 @@ Preprocess::Preprocess()
     max_dist = 4.0;
     max_height = 3.0;
     min_height = 0.3;
+    tf_walltime = true;
 
     jump_up_limit = cos(jump_up_limit / 180 * M_PI);
     jump_down_limit = cos(jump_down_limit / 180 * M_PI);
