@@ -17,7 +17,7 @@ echo "Frame: $FRAME_ID, X: $X, Y: $Y"
 
 # Execute the ROS 2 publication
 # The --once flag sends the message then exits
-ros2 topic pub --once /goal_pose geometry_msgs/msg/PoseStamped "{
+ros2 topic pub -t 5 /goal_pose geometry_msgs/msg/PoseStamped "{
   header: {
     stamp: {sec: 0, nanosec: 0},
     frame_id: '$FRAME_ID'

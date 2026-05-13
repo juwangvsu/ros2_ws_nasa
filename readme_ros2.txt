@@ -18,6 +18,25 @@ sudo apt install ros-humble-turtlebot3-gazebo
 python3 -m pip install --user rosbags
 sudo apt install ros-humble-rosbag2-storage-default-plugins
 
+----- 5/13/26 test case bag30-----
+`
+./start_bagrun_uni_scan3.sh ~/bag30 True False
+./start_apriltagreal.sh False Left
+./start_goal2.sh global 5 2
+./start_tf_cam2optical.sh
+	this to enable depth cloud tf for bagrun, normal run provided by realsense node
+
+issue:
+	? scan2 need finetune. range filter, height filter
+		pointcloud_to_laserscan_logged_node_depthcloud
+
+ussue: pointcloud_to_laserscan_camcloud_realsense.yaml
+
+	# convert depth cloud, height is y axis downward,  but because realsense camera is upside down, so the y in optical frame become aligned with z in base_link
+	# height 0.2 hit the right level for bag 28
+	# height 0.0 hit the floor level for bag 28
+	# height -0.10 to 0.0 hit many the floor level and also still the obstacle for bag 28
+
 ----- 5/10/26 start_goal.sh -----
 	send goal in global frame not as reliable as map frame
 	need to address this at mission_node.py
