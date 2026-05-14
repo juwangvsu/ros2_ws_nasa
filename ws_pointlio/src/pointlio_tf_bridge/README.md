@@ -1,5 +1,9 @@
 # pointlio_tf_bridge
+---------------5/13/26 add an init offset param when start---
 
+or restart point_lio
+
+-------------------------
 ROS 2 package to:
 - republish Point-LIO TF `camera_init -> aft_mapped` as `odom -> base_link`
 - publish `/odom` as `nav_msgs/msg/Odometry`

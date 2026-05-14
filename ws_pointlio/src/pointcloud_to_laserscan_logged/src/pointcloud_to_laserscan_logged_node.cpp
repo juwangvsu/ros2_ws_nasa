@@ -70,7 +70,11 @@ std::cout << "Nanosecs: " << scan_msg->header.stamp.nanosec << std::endl;
 	std::cout << "Raw Nanoseconds: " << now.nanoseconds() << std::endl;
     }
     if (use_walltime_){
+	std::cout << "using wall time" << std::endl;
 	    scan_msg->header.stamp = this->get_clock()->now(); 
+    }else
+    {
+	std::cout << "using point cloud time" << std::endl;
     }
     scan_msg->angle_min = static_cast<float>(angle_min_);
     scan_msg->angle_max = static_cast<float>(angle_max_);

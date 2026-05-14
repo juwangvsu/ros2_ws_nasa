@@ -23,6 +23,7 @@ setup(
     entry_points={
         'console_scripts': [
             'republish_pointlio_tf_as_odom = pointlio_tf_bridge.republish_pointlio_tf_as_odom:main',
+            'republish_pointlio_tf_as_odom_with_initial_and_update = pointlio_tf_bridge.republish_pointlio_tf_as_odom_with_initial_and_update:main',
         ],
     },
 )

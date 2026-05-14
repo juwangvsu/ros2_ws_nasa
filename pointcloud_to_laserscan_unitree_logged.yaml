@@ -15,7 +15,7 @@ pointcloud_to_laserscan_logged:
     queue_size: 10
     scan_time: 0.1
     use_inf: true
-    use_walltime: false
+    use_walltime: true
     dbg: true
     inf_epsilon: 1.0
     output_qos: reliable
