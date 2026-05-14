@@ -1,6 +1,6 @@
 pointcloud_to_laserscan_logged:
   ros__parameters:
-    use_sim_time: true
+    use_sim_time: false 
     input_topic: /unilidar/cloud
     output_topic: /scan
     target_frame: baal/base
