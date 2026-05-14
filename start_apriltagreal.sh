@@ -24,6 +24,7 @@ gnome-terminal -x  $SHELL -ic "cd ~/ros2_ws_nasa; conda deactivate; v4l2-ctl -d 
 
 #global anchor (default global->map tf in scan time too), apriltag node, tf_repub2 (tag_0_map tf in scan time so we can see in map frame) 
 if [ "$2" = "Left" ]; then
+	echo "ucf left arena layout"
 	gnome-terminal -x  $SHELL -ic "conda deactivate; ros2 launch fiducial_tb3_gazebo_demo sim_mapping_anchor.launch.py apriltag_cfg:=apriltag_20.yaml;bash"
 else
 	echo "ucf right arena layout"
@@ -42,7 +43,7 @@ fi
 gnome-terminal -x  $SHELL -ic "ros2 run tf2_ros static_transform_publisher --x 0 --y 0 --z 0 --yaw 0 --pitch 0 --roll 3.14 --frame-id base_link --child-frame-id camera_link ; bash" # realsense camera upside down so roll 180 deg 
 gnome-terminal -x  $SHELL -ic "ros2 launch realsense2_camera rs_launch.py pointcloud.enable:=true device_type:=d455 align_depth.enable:=true"
 gnome-terminal -x  $SHELL -ic "cd ~/ros2_ws_nasa; ros2 run pointcloud_to_laserscan_logged pointcloud_to_laserscan_logged_node_depthcloud  --ros-args   --params-file pointcloud_to_laserscan_camcloud_realsense.yaml -r __node:=pointcloud_to_laser_scan2 " 
-
+gnome-terminal -x  $SHELL -ic "ros2 run rqt_image_view rqt_image_view"
 
 gnome-terminal -x  $SHELL -ic "cd ~/ros2_ws_nasa; sleep 10; ros2 topic pub /usercmd std_msgs/msg/String '{'data': 'go'}' -t 5; bash"
 #gnome-terminal -x  $SHELL -ic "cd ~/ros2_ws_nasa;  ros2 launch teleop_twist_joy teleop-launch.py joy_config:='xbox'"

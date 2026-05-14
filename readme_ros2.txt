@@ -18,6 +18,24 @@ sudo apt install ros-humble-turtlebot3-gazebo
 python3 -m pip install --user rosbags
 sudo apt install ros-humble-rosbag2-storage-default-plugins
 
+----- 5/14/26 test all sensors-----
+
+./start_nasa_full3.sh True False
+./start_apriltagreal.sh False Right
+
+all sensors should be up, 
+map show
+image_view show
+
+misc:
+start_lioonly.sh
+  reset pointlio if messing up
+start_wificonnesa.sh
+ws_pointlio/src/fiducial_tb3_gazebo_demo/launch/sim_mapping_anchor_rightside.launch.py
+    fixed left/right field problem, 
+    need to work on mission_node.py
+
+
 ----- 5/13/26 test case bag30-----
 `
 ./start_bagrun_uni_scan3.sh ~/bag30 True False

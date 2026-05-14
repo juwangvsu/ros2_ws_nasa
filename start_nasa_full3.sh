@@ -1,7 +1,7 @@
 #!/bin/bash
 # debug slam crash, 
 # ./start_nasa_full2.sh True True
-			rviz fakescan2
+#			rviz fakescan2
 # ./start_nasa_full2.sh False False
 #       $1 True to show pointlio rviz
 #	$2 True to run fakescan2
@@ -19,7 +19,7 @@ gnome-terminal -x  $SHELL -ic "ros2 run laser_filters scan_to_scan_filter_chain 
 
 #fake scan2 and scan+scan2->scan3
 
-gnome-terminal -x  $SHELL -ic "ros2 run ira_laser_tools laserscan_multi_merger   --ros-args  -r __node:=laserscan_multi_merger --params-file laser_merger.yaml"
+gnome-terminal -x  $SHELL -ic "cd ~/ros2_ws_nasa; sleep 5; ros2 run ira_laser_tools laserscan_multi_merger   --ros-args  -r __node:=laserscan_multi_merger --params-file laser_merger.yaml"
 if [ "$2" = "True" ]; then
 	echo "fake scan2"
 	gnome-terminal -x  $SHELL -ic "ros2 run fake_scan2_publisher fake_scan2_node"
@@ -29,11 +29,11 @@ fi
 
 
 #5/10/26 copied from start_bagrun_uni_scan3.sh, tb tested... launch file diff in loading param file or not
-gnome-terminal -x  $SHELL -ic "cd ~/ros2_ws_nasa; ros2 launch pointlio_tf_bridge pointlio_tf_bridge.launch.py use_sim_time:=true static_pitch:=0.0 static_yaw:=-2.53 bridge_params_file:=bridge.yaml; bash" # 15 deg 0.26, 20 deg 0.348 , 30 deg 0.52 base_link -> baal/imu_initial cmdline param overwriten by bridge.yaml base_link to baal/imu_initial to correct the tf from point_lio
+gnome-terminal -x  $SHELL -ic "cd ~/ros2_ws_nasa; ros2 launch pointlio_tf_bridge pointlio_tf_bridge.launch.py use_sim_time:=false static_pitch:=0.0 static_yaw:=-2.53 bridge_params_file:=bridge.yaml; bash" # 15 deg 0.26, 20 deg 0.348 , 30 deg 0.52 base_link -> baal/imu_initial cmdline param overwriten by bridge.yaml base_link to baal/imu_initial to correct the tf from point_lio
 #gnome-terminal -x  $SHELL -ic "cd ~/ros2_ws_nasa; ros2 launch pointlio_tf_bridge pointlio_tf_bridge_uni.launch.py static_pitch:=0.0 static_yaw:=3.14 rate:=10.0; bash" 
 #default rate 50, low to 10 help something? base_link -> baal/imu_initial lidar face robot back so 3.14 yaw, if flat pitch is 0
 
-gnome-terminal -x  $SHELL -ic "cd ~/ros2_ws_nasa; ros2 launch slam_toolbox online_async_launch.py   slam_params_file:=slam_async_pointlio.yaml; bash"
+gnome-terminal -x  $SHELL -ic "cd ~/ros2_ws_nasa; ros2 launch slam_toolbox online_async_launch.py   slam_params_file:=slam_async_pointlio.yaml use_sim_time:=false; bash"
 gnome-terminal -x  $SHELL -ic "ros2 launch nav2_bringup navigation_launch.py   params_file:=nav2_pointlio.yaml;bash"
 #gnome-terminal -x  $SHELL -ic " ros2 launch mdds30_serial_driver mdds30.launch.py; bash" 
 

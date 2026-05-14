@@ -1,5 +1,8 @@
 #!/usr/bin/env python3
 
+# usage to impl: python3 mission_node.py --x 4 --y 6
+# x and y is the dumping coordinate
+
 import rclpy
 from rclpy.node import Node
 from std_msgs.msg import String
@@ -73,6 +76,19 @@ class MissionNode(Node):
         joy.axes[3] = a3
         joy.axes[4] = a4
         self.joy_pub.publish(joy)
+    
+    #turn at angular velocity for some duration
+    def turn_deg(self, duration=2.0, speed=0.5):
+        twist = Twist()
+        twist.angular.z = speed
+
+        start = time.time()
+        while time.time() - start < duration:
+            self.cmd_vel_pub.publish(twist)
+            time.sleep(0.1)
+
+        # Stop
+        self.cmd_vel_pub.publish(Twist())
 
     def move_forward(self, duration=2.0, speed=0.5):
         twist = Twist()
@@ -108,7 +124,13 @@ class MissionNode(Node):
 
         # ---- MOVE FORWARD ----
         self.get_logger().info("Moving forward...")
-        self.move_forward(2.0)
+        self.move_forward(2.0, speed=0.5)
+        
+        time.sleep(5)
+
+        # ---- turn test  ----
+        self.get_logger().info("turning . ...")
+        self.turn_deg(2.0, speed=0.5)
 
         # ---- BUCKET UP ----
         self.get_logger().info("Scooping...")

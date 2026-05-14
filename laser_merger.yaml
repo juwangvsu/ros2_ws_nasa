@@ -1,6 +1,6 @@
 laserscan_multi_merger:
   ros__parameters:
-    use_sim_time: true
+    use_sim_time: false 
     allow_scan_delay: true
     destination_frame: base_link 
     scan_destination_topic: /scan3
