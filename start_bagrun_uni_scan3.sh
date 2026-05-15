@@ -17,7 +17,7 @@ gnome-terminal -x  $SHELL -ic "ros2 launch point_lio mapping_unilidar_l2.launch.
 
 gnome-terminal -x  $SHELL -ic "rviz2 -d ws_pointlio/src/pointlio_tf_bridge/scan.rviz  --ros-args -p use_sim_time:=true; bash"
 #gnome-terminal -x  $SHELL -ic "ros2 run pointcloud_to_laserscan_logged pointcloud_to_laserscan_logged_node_rock  --ros-args   --params-file pointcloud_to_laserscan_unitree_logged.yaml   -r cloud_in:=/unilidar/cloud   -r scan:=/scan"
-gnome-terminal -x  $SHELL -ic "ros2 run pointcloud_to_laserscan_logged pointcloud_to_laserscan_logged_node  --ros-args   --params-file pointcloud_to_laserscan_unitree_logged.yaml   -r cloud_in:=/unilidar/cloud   -r scan:=/scan" # generate /scan range_min: 1.0 max_height: 2.0
+gnome-terminal -x  $SHELL -ic "ros2 run pointcloud_to_laserscan_logged pointcloud_to_laserscan_logged_node  --ros-args   --params-file pointcloud_to_laserscan_unitree_logged.yaml -p use_sim_time:=true  -r cloud_in:=/unilidar/cloud   -r scan:=/scan" # generate /scan range_min: 1.0 max_height: 2.0
 
 gnome-terminal -x  $SHELL -ic "cd ~/ros2_ws_nasa; ros2 run laser_filters scan_to_scan_filter_chain --ros-args --params-file scan_filter.yaml -r scan:=/scan3 -r scan_filtered:=/scan_filtered" # max_height=2 if too high ceiling points in scan. /scan3 -> /scan_filtered
 #fake scan2 and scan+scan2->scan3

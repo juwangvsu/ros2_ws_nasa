@@ -210,18 +210,17 @@ class TFRepublisher(Node):
         t_initial = tuple(self.initial_odom_to_base_link_xyz)
         q_initial = rpy_to_quat(*self.initial_odom_to_base_link_rpy)
 
-        t_camera_base, q_camera_base = compose_transform(
-            t_odom_lidar,
-            q_odom_lidar,
-            t_lidar_base,
-            q_lidar_base,
-        )
-
-        t_odom_base, q_odom_base = compose_transform(
+        t_odom_lidar2, q_odom_lidar2 = compose_transform(
             t_initial,
             q_initial,
-            t_camera_base,
-            q_camera_base,
+            t_odom_lidar,
+            q_odom_lidar,
+        )
+        t_odom_base, q_odom_base = compose_transform(
+            t_odom_lidar2,
+            q_odom_lidar2,
+            t_lidar_base,
+            q_lidar_base,
         )
 
         out.transform.translation.x = t_odom_base[0]
