@@ -2,7 +2,7 @@
 
 # Define how many times you want the loop to run
 ITERATIONS=15
-
+python3 stoprobot_2sec.py > /dev/null 2>&1 &
 for ((i=1; i<=$ITERATIONS; i++))
 do
     echo "--- Iteration $i of $ITERATIONS ---"
@@ -20,8 +20,8 @@ do
     ros2 launch point_lio mapping_unilidar_l2.launch.py rviz:=False > /dev/null 2>&1 &
 
     # 3. Sleep for 8 seconds
-    echo "Waiting 8 seconds..."
-    sleep 8
+    echo "Waiting 15 seconds..."
+    sleep 15
 done
 
 echo "Loop completed."
