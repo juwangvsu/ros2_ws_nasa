@@ -13,7 +13,7 @@ do
     echo "Cleaning up old laserM processes..."
     ps aux | grep laserM | grep -v grep | awk '{print $2}' | xargs -r kill -9
 
-    #sleep 3
+    sleep 5 
     # 2. Launch ROS2 in the background
     # '&' at the end sends it to the background
     echo "Launching point_lio..."

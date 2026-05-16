@@ -18,6 +18,12 @@ sudo apt install ros-humble-turtlebot3-gazebo
 python3 -m pip install --user rosbags
 sudo apt install ros-humble-rosbag2-storage-default-plugins
 
+----- 5/16/26 panda2 synced -----
+./start_bagrun_uni_scan3.sh ~/bag19_hallway_flat True False
+./start_lioonly2.sh 
+
+stopping lio works a little, missing some movement due to stop and restarting point lio while robot still moving.
+
 ----- 5/14/26 test all sensors-----
 
 ./start_nasa_full3.sh True False
