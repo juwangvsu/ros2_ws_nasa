@@ -465,7 +465,10 @@ slam_toolbox:
   tf need:
     odom -> frame_id (laserscan /scan)
     odom -> base_frame (see param file)
+	5/29/26: if missing odom->base_link tf, it will complain lidar frame tf error
+	tmp/dbg fix: ros2 run tf2_ros static_transform_publisher   0 0 0 0 0 0   odom base_link
 
+	[async_slam_toolbox_node-1] [INFO] [1780076893.921946530] [slam_toolbox]: Message Filter dropping message: frame 'velodyne' at time 1780076892.916 for reason 'the timestamp on the message is earlier than all the data in the transform cache'
 fiducial:
 	static (launch file):
 	base_link'-> 'base_scan'
